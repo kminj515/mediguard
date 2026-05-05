@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class IntakeRecordReq {
 
-    @NotNull(message = "회원 ID를 입력해주세요")
-    private Long memberId; // 복용한 사용자 ID
-
     @NotNull(message = "약 ID를 입력해주세요")
     private Long medicineId; // 복용한 약 ID
 
