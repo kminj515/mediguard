@@ -12,8 +12,7 @@ public enum VideoErrorCode implements ResponseCode {
 //    INVALID_PASSWORD("MEMBER_003", "비밀번호가 일치하지 않습니다"),
 //    MEMBER_NOT_FOUND("MEMBER_004", "회원을 찾을 수 없습니다");
 
-    VIDEO_NOT_FOUND("VIDEO_1", "존재하지 않는 이메일입니다");
-
+    VIDEO_NOT_FOUND("VIDEO_001", "존재하지 않는 영상입니다");
 
 
     private final String statusCode;
