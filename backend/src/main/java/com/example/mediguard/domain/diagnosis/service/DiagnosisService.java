@@ -39,10 +39,11 @@ public class DiagnosisService {
 
     public List<DiagnosisPartResponse> getDiagnosisQuestions() {
 
+        // 복약 안전 카테고리
         Map<Long, String> categoryNames = Map.of(
-                1L, "금융 기본 지식",
-                2L, "사기 예방",
-                3L, "예적금 개념"
+                1L, "기초 복약 상식",
+                2L, "약 부작용 & 주의사항",
+                3L, "올바른 복용법"
         );
 
         return categoryNames.entrySet().stream()
@@ -61,13 +62,7 @@ public class DiagnosisService {
                     return new DiagnosisPartResponse(categoryId, categoryName, questions);
                 })
                 .toList();
-
-
     }
-
-
-
-
 
     @Transactional
     public DiagnosisResponse submitDiagnosis(Long memberId, DiagnosisRequest request) {
@@ -99,11 +94,10 @@ public class DiagnosisService {
         return new DiagnosisResponse(
                 grade.getDescription(),
                 totalScore,
-                "역량 진단이 성공적으로 완료되었습니다."
+                // 메시지 문구
+                "복약 안전 수준 진단이 완료되었습니다."
         );
     }
-
-
 
     @Transactional(readOnly = true)
     public DiagnosisHistoryResponse getDiagnosisHistory(Long historyId) {
@@ -116,6 +110,4 @@ public class DiagnosisService {
                 history.getFinalGrade()
         );
     }
-
-
 }

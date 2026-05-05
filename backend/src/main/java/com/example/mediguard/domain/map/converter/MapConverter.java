@@ -1,20 +1,20 @@
 package com.example.mediguard.domain.map.converter;
 
-import com.example.mediguard.domain.map.dto.res.BankRes;
+import com.example.mediguard.domain.map.dto.res.PharmacyRes;
 import com.example.mediguard.domain.map.dto.res.LocationRes;
 
 import java.util.Map;
 
 public class MapConverter {
 
-    public static BankRes toBankRes(Map<String, Object> doc) {
+    public static PharmacyRes toPharmacyRes(Map<String, Object> doc) {
         String placeName = (String) doc.get("place_name");
-        String bankName = extractBankName(placeName);
+        String pharmacyName = extractPharmacyName(placeName);
 
-        return BankRes.builder()
+        return PharmacyRes.builder()
                 .id(Long.parseLong((String) doc.get("id")))
-                .name(bankName)
-                .branchName(placeName.replace(bankName, "").trim())
+                .name(pharmacyName)
+                .branchName(placeName.replace(pharmacyName, "").trim())
                 .fullName(placeName)
                 .address((String) doc.get("address_name"))
                 .roadAddress((String) doc.get("road_address_name"))
@@ -25,12 +25,28 @@ public class MapConverter {
                 .build();
     }
 
-    private static String extractBankName(String placeName) {
+    private static String extractPharmacyName(String placeName) {
         if (placeName == null) return "";
-        String[] bankNames = {"신한은행", "국민은행", "우리은행", "하나은행", "NH농협은행", "기업은행"}; // ... 리스트 유지
-        for (String name : bankNames) {
+
+        String[] pharmacyNames = {
+                "온누리약국",
+                "한미약국",
+                "종로약국",
+                "메디팜약국",
+                "드림약국",
+                "건강약국",
+                "365약국",
+                "보람약국",
+                "하나약국",
+                "국민약국",
+                "미래약국",
+                "사랑약국"
+        };
+
+        for (String name : pharmacyNames) {
             if (placeName.contains(name)) return name;
         }
+
         return placeName.split(" ")[0];
     }
 
@@ -39,6 +55,7 @@ public class MapConverter {
         return Double.parseDouble(value.toString());
     }
 
+    // ✅ 공통 기능
     public static LocationRes toLocationResFromKeyword(Map<String, Object> doc) {
         return LocationRes.builder()
                 .placeName((String) doc.get("place_name"))
@@ -61,7 +78,7 @@ public class MapConverter {
                 .placeName(mainName)
                 .address(addressObj != null ? (String) addressObj.get("address_name") : "")
                 .roadAddress(roadAddressObj != null ? (String) roadAddressObj.get("address_name") : "")
-                .latitude(toDouble(doc.get("y"))) // 주소 검색의 루트 y, x 사용
+                .latitude(toDouble(doc.get("y")))
                 .longitude(toDouble(doc.get("x")))
                 .build();
     }

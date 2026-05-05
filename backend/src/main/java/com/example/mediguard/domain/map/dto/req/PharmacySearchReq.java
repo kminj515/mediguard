@@ -11,10 +11,10 @@ import jakarta.validation.constraints.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankSearchReq {
+public class PharmacySearchReq {
 
-    @NotBlank(message = "은행명을 입력해주세요")
-    private String bankName;
+    @NotBlank(message = "약국명을 입력해주세요")
+    private String pharmacyName;
 
     @NotNull(message = "위도를 입력해주세요")
     @DecimalMin(value = "-90.0", message = "위도는 -90 ~ 90 사이여야 합니다")

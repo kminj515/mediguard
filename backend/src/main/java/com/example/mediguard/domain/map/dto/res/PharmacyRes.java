@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BankRes {
+public class PharmacyRes {
 
     private Long id;
-    private String name;            // 은행명 (예: "신한은행")
-    private String branchName;      // 지점명 (예: "강남역지점")
-    private String fullName;        // 전체명 (예: "신한은행 강남역지점")
+    private String name;            // 약국명 (예: "온누리약국")
+    private String branchName;      // 지점명 (예: "강남역점")
+    private String fullName;        // 전체명 (예: "온누리약국 강남역점")
     private String address;         // 지번 주소
     private String roadAddress;     // 도로명 주소
     private Double lat;             // 위도
