@@ -1,81 +1,27 @@
 package com.example.mediguard.global.exception;
 
+import com.example.mediguard.global.response.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
-// ⬇️ domain 패키지만 적용 (Swagger 제외)
 @RestControllerAdvice(basePackages = "com.example.mediguard.domain")
 public class GlobalExceptionHandler {
 
-    // Member 관련 예외
-    @ExceptionHandler(MemberNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleMemberNotFound(
-            MemberNotFoundException e, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", 404);
-        response.put("error", "Not Found");
-        response.put("message", e.getMessage());
-        response.put("path", request.getRequestURI());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    // CustomException 하위 모든 예외 한 번에 처리
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCustomException(
+            CustomException e, HttpServletRequest request) {
+        return ResponseEntity
+                .status(Integer.parseInt(e.getResponseCode().getStatusCode()))
+                .body(ApiResponse.error(e.getResponseCode()));
     }
 
-    // Password 관련 예외
-    @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<Map<String, Object>> handleInvalidPassword(
-            InvalidPasswordException e, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", 401);
-        response.put("error", "Unauthorized");
-        response.put("message", e.getMessage());
-        response.put("path", request.getRequestURI());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-    }
-
-    // Video 관련 예외
-    @ExceptionHandler(VideoNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleVideoNotFound(
-            VideoNotFoundException e, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", 404);
-        response.put("error", "Not Found");
-        response.put("message", e.getMessage());
-        response.put("path", request.getRequestURI());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
-
-    // IllegalArgumentException
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, Object>> handleIllegalArgument(
-            IllegalArgumentException e, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", 400);
-        response.put("error", "Bad Request");
-        response.put("message", e.getMessage());
-        response.put("path", request.getRequestURI());
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
-    // 모든 예외 처리 (최후 방어선)
+    // 예상치 못한 서버 에러 (최후 방어선)
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleException(
+    public ResponseEntity<ApiResponse<Void>> handleException(
             Exception e, HttpServletRequest request) {
-
-        // 에러 로그 출력
         System.err.println("======= 예외 발생 =======");
         System.err.println("URI: " + request.getRequestURI());
         System.err.println("메시지: " + e.getMessage());
@@ -83,13 +29,8 @@ public class GlobalExceptionHandler {
         e.printStackTrace();
         System.err.println("========================");
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", 500);
-        response.put("error", "Internal Server Error");
-        response.put("message", "서버 내부 오류가 발생했습니다.");
-        response.put("path", request.getRequestURI());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        return ResponseEntity
+                .status(500)
+                .body(ApiResponse.error());
     }
 }

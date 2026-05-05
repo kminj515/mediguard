@@ -1,10 +1,9 @@
 package com.example.mediguard.global.exception;
 
-public class InvalidPasswordException extends RuntimeException {
+import com.example.mediguard.domain.member.enums.MemberErrorCode;
+
+public class InvalidPasswordException extends CustomException {
     public InvalidPasswordException() {
-        super("비밀번호가 일치하지 않습니다.");
-    }
-    public InvalidPasswordException(String message) {
-        super(message);
+        super(MemberErrorCode.INVALID_PASSWORD);
     }
 }
