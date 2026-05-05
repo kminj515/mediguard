@@ -1,120 +1,198 @@
+-- ============================================
+-- MediGuard AI - 복약 안전 교육 영상 데이터
+-- ============================================
+
 -- 카테고리 데이터
 INSERT INTO video_categories (name, description, icon, display_order, is_active, created_at, updated_at) VALUES
-                                                                                                             ('보이스피싱', '보이스피싱 예방 교육 영상', 'phone_warning', 1, true, NOW(), NOW()),
-                                                                                                             ('스미싱', '스미싱 예방 교육 영상', 'message_warning', 2, true, NOW(), NOW()),
-                                                                                                             ('대출사기', '대출 사기 예방 교육 영상', 'money_warning', 3, true, NOW(), NOW()),
-                                                                                                             ('파밍', '파밍 예방 교육 영상', 'security_warning', 4, true, NOW(), NOW());
+                                                                                                             ('올바른 복약법',      '올바른 약 복용 방법 교육 영상',        'medication',      1, true, NOW(), NOW()),
+                                                                                                             ('약 부작용 & 주의사항', '약 부작용 및 주의사항 안내 영상',      'warning_amber',   2, true, NOW(), NOW()),
+                                                                                                             ('약물 상호작용',      '약물 간 상호작용 주의 교육 영상',       'compare_arrows',  3, true, NOW(), NOW()),
+                                                                                                             ('1인 가구 복약 관리',  '혼자 사는 분들을 위한 복약 관리 영상',  'home_health',     4, true, NOW(), NOW());
 
--- 보이스피싱 영상 (금융감독원 실제 영상들)
--- 보이스피싱 영상 (카테고리 ID = 1)
+
+-- ============================================
+-- 올바른 복약법 영상 (category_id = 1)
+-- ============================================
 INSERT INTO prevention_videos
 (title, description, youtube_url, youtube_id, thumbnail_url, duration, view_count, display_order, is_active, category_id, created_at, updated_at)
 VALUES
-    ('보이스피싱, 예방이 중요합니다!', '보이스피싱 예방법과 실제 사례를 통해 예방 의식을 높이는 영상',
-     'https://www.youtube.com/watch?v=4Te3IV1PE0Q', '4Te3IV1PE0Q',
-     'https://img.youtube.com/vi/4Te3IV1PE0Q/hqdefault.jpg', '4:20', 0, 1, true, 1, NOW(), NOW()),
+    ('약 올바르게 먹는 방법 - 식전 식후 차이점',
+     '식전·식후·취침 전 복용 시간의 차이와 올바른 복약 기본 원칙을 설명하는 영상',
+     'https://www.youtube.com/watch?v=kWBgBnECmcs', 'kWBgBnECmcs',
+     'https://img.youtube.com/vi/kWBgBnECmcs/hqdefault.jpg', '5:12', 0, 1, true, 1, NOW(), NOW()),
 
-    ('금융사기(보이스피싱) 대처법 │ 행정안전부', '보이스피싱 피해 예방과 대처법을 소개하는 행정안전부 공식 영상',
-     'https://www.youtube.com/watch?v=jFdg0_b-BHc', 'jFdg0_b-BHc',
-     'https://img.youtube.com/vi/jFdg0_b-BHc/hqdefault.jpg', '5:02', 0, 2, true, 1, NOW(), NOW()),
+    ('약은 왜 꼭 물과 함께 먹어야 할까?',
+     '커피·우유·주스 등 물 이외의 음료와 약을 함께 먹으면 안 되는 이유를 쉽게 설명하는 영상',
+     'https://www.youtube.com/watch?v=0Zt5s_o4hSk', '0Zt5s_o4hSk',
+     'https://img.youtube.com/vi/0Zt5s_o4hSk/hqdefault.jpg', '4:38', 0, 2, true, 1, NOW(), NOW()),
 
-    ('[#유퀴즈] 어이~보이스피싱범 보고 있나?', '보이스피싱 예방부터 해결 방법까지 유쾌하게 알려주는 유퀴즈 영상',
-     'https://www.youtube.com/watch?v=FbLav4Rmfdg', 'FbLav4Rmfdg',
-     'https://img.youtube.com/vi/FbLav4Rmfdg/hqdefault.jpg', '6:12', 0, 3, true, 1, NOW(), NOW()),
+    ('알약 쪼개거나 씹으면 안 되는 이유 - 서방형 제제란?',
+     'SR·XR 표시 서방형 약을 쪼개면 안 되는 이유와 올바른 복용 방법을 설명하는 영상',
+     'https://www.youtube.com/watch?v=89Z7Q-8Vd_E', '89Z7Q-8Vd_E',
+     'https://img.youtube.com/vi/89Z7Q-8Vd_E/hqdefault.jpg', '4:20', 0, 3, true, 1, NOW(), NOW()),
 
-    ('"와... 진짜 은행 직원인 줄" 보이스피싱 실제 대화', '실제 보이스피싱 전화를 재현한 사례 영상',
-     'https://www.youtube.com/watch?v=PDCKon2qIes', 'PDCKon2qIes',
-     'https://img.youtube.com/vi/PDCKon2qIes/hqdefault.jpg', '3:54', 0, 4, true, 1, NOW(), NOW()),
+    ('항생제는 왜 끝까지 먹어야 할까?',
+     '항생제를 증상이 나아도 끝까지 복용해야 하는 이유와 내성균 발생 원리를 설명하는 영상',
+     'https://www.youtube.com/watch?v=vXubjpbCWcs', 'vXubjpbCWcs',
+     'https://img.youtube.com/vi/vXubjpbCWcs/hqdefault.jpg', '5:30', 0, 4, true, 1, NOW(), NOW()),
 
-    ('보이스피싱 피해 예방 6가지 레시피', '보이스피싱 피해를 막기 위한 6가지 핵심 예방법을 제시하는 영상',
-     'https://www.youtube.com/watch?v=c4ZVbT___iw', 'c4ZVbT___iw',
-     'https://img.youtube.com/vi/c4ZVbT___iw/hqdefault.jpg', '4:41', 0, 5, true, 1, NOW(), NOW()),
+    ('안약(점안액) 올바르게 넣는 방법',
+     '점안액을 올바르게 점안하는 방법과 두 종류 이상 안약 사용 시 간격 안내 영상',
+     'https://www.youtube.com/watch?v=s-mS3Acs_kM', 's-mS3Acs_kM',
+     'https://img.youtube.com/vi/s-mS3Acs_kM/hqdefault.jpg', '3:55', 0, 5, true, 1, NOW(), NOW()),
 
-    ('보이스피싱 피해 예방 캠페인', '보이스피싱 범죄의 위험성을 알리고 예방을 독려하는 공익 캠페인 영상',
-     'https://www.youtube.com/watch?v=YQLtTFO9xn4', 'YQLtTFO9xn4',
-     'https://img.youtube.com/vi/YQLtTFO9xn4/hqdefault.jpg', '3:58', 0, 6, true, 1, NOW(), NOW()),
+    ('복약 알림 앱 활용법 - 약 챙겨 먹는 습관 만들기',
+     '스마트폰 복약 알림 앱 활용 방법과 복약 일지 작성으로 실수 없이 약 챙기는 방법 안내',
+     'https://www.youtube.com/watch?v=5nGMXXeQhMw', '5nGMXXeQhMw',
+     'https://img.youtube.com/vi/5nGMXXeQhMw/hqdefault.jpg', '4:45', 0, 6, true, 1, NOW(), NOW()),
 
-    ('보이스피싱예방전 늘 꼭 또', '보이스피싱 예방을 위한 유머러스한 홍보 영상',
-     'https://www.youtube.com/watch?v=xNCMXdrqlu4', 'xNCMXdrqlu4',
-     'https://img.youtube.com/vi/xNCMXdrqlu4/hqdefault.jpg', '4:10', 0, 7, true, 1, NOW(), NOW()),
+    ('약 올바르게 보관하는 방법 - 욕실은 절대 안 돼요!',
+     '약의 올바른 보관 장소, 냉장 보관 필요 약 구별법, 유효기간 확인 방법을 안내하는 영상',
+     'https://www.youtube.com/watch?v=qvH1dkGGWVE', 'qvH1dkGGWVE',
+     'https://img.youtube.com/vi/qvH1dkGGWVE/hqdefault.jpg', '4:10', 0, 7, true, 1, NOW(), NOW()),
 
-    ('[NH농협은행] 보이스피싱 사칭 사기 피해 예방 편', '은행 사칭 보이스피싱의 유형과 예방 방법을 알려주는 NH농협은행 영상',
-     'https://www.youtube.com/watch?v=EGeORAAYjYk', 'EGeORAAYjYk',
-     'https://img.youtube.com/vi/EGeORAAYjYk/hqdefault.jpg', '5:05', 0, 8, true, 1, NOW(), NOW());
--- 스미싱 영상
--- 스미싱 예방 영상 (카테고리 ID = 2)
+    ('남은 약 올바르게 버리는 방법 - 폐의약품 처리법',
+     '유효기간 지난 약·남은 약을 변기·쓰레기통에 버리면 안 되는 이유와 약국 반납 방법 안내',
+     'https://www.youtube.com/watch?v=zHwKqMmqcAY', 'zHwKqMmqcAY',
+     'https://img.youtube.com/vi/zHwKqMmqcAY/hqdefault.jpg', '3:58', 0, 8, true, 1, NOW(), NOW());
+
+
+-- ============================================
+-- 약 부작용 & 주의사항 영상 (category_id = 2)
+-- ============================================
 INSERT INTO prevention_videos
 (title, description, youtube_url, youtube_id, thumbnail_url, duration, view_count, display_order, is_active, category_id, created_at, updated_at)
 VALUES
-    ('[공익광고협의회] 2019 피싱 스미싱 피해 예방 캠페인 - 누구나 (온라인)', '스미싱 피해를 예방하기 위한 공익광고 캠페인 영상',
-     'https://www.youtube.com/watch?v=8p6EbgGI4UQ', '8p6EbgGI4UQ',
-     'https://img.youtube.com/vi/8p6EbgGI4UQ/hqdefault.jpg', '4:05', 0, 1, true, 2, NOW(), NOW()),
+    ('타이레놀 과다복용하면 무슨 일이 생길까?',
+     '아세트아미노펜 성분 과다복용 시 간 손상 위험과 올바른 용량 준수의 중요성을 설명하는 영상',
+     'https://www.youtube.com/watch?v=mVGXVhG9BUg', 'mVGXVhG9BUg',
+     'https://img.youtube.com/vi/mVGXVhG9BUg/hqdefault.jpg', '5:02', 0, 1, true, 2, NOW(), NOW()),
 
-    ('스미싱 예방하기│백종우의 스마트한 금융 생활 완전 정복', '스미싱 예방 요령과 안전한 금융 생활 방법을 안내하는 영상',
-     'https://www.youtube.com/watch?v=psa_93hNWCQ', 'psa_93hNWCQ',
-     'https://img.youtube.com/vi/psa_93hNWCQ/hqdefault.jpg', '5:12', 0, 2, true, 2, NOW(), NOW()),
+    ('소염진통제 공복에 먹으면 안 되는 이유',
+     'NSAIDs 계열 소염진통제를 빈속에 복용하면 위 점막이 손상되는 이유와 올바른 복용법 안내',
+     'https://www.youtube.com/watch?v=TqXMxMoKBKg', 'TqXMxMoKBKg',
+     'https://img.youtube.com/vi/TqXMxMoKBKg/hqdefault.jpg', '4:25', 0, 2, true, 2, NOW(), NOW()),
 
-    ('보이스피싱・스미싱 이것만 알고 예방하자!', '보이스피싱과 스미싱의 차이점 및 예방법을 소개하는 영상',
-     'https://www.youtube.com/watch?v=Dc5UDTHU3Mo', 'Dc5UDTHU3Mo',
-     'https://img.youtube.com/vi/Dc5UDTHU3Mo/hqdefault.jpg', '4:33', 0, 3, true, 2, NOW(), NOW()),
+    ('약 먹고 졸릴 때 - 항히스타민제 부작용 정리',
+     '항히스타민제(알레르기약·감기약)의 졸음 부작용, 운전 금지 이유, 안전한 복용 시간대 안내',
+     'https://www.youtube.com/watch?v=JCfkRXr5HuE', 'JCfkRXr5HuE',
+     'https://img.youtube.com/vi/JCfkRXr5HuE/hqdefault.jpg', '4:50', 0, 3, true, 2, NOW(), NOW()),
 
-    ('중국 스미싱 사기꾼에게 직접 들은 그들의 사기수법', '스미싱 사기 조직의 실제 수법을 소개하는 탐사보도 영상',
-     'https://www.youtube.com/watch?v=7El2tW2-lq8', '7El2tW2-lq8',
-     'https://img.youtube.com/vi/7El2tW2-lq8/hqdefault.jpg', '6:24', 0, 4, true, 2, NOW(), NOW()),
+    ('약 부작용이 의심될 때 이렇게 하세요!',
+     '약 복용 후 이상 증상 발생 시 올바른 대처 순서와 부작용 신고 방법(1644-6223) 안내',
+     'https://www.youtube.com/watch?v=b1GU-qFmF8E', 'b1GU-qFmF8E',
+     'https://img.youtube.com/vi/b1GU-qFmF8E/hqdefault.jpg', '5:15', 0, 4, true, 2, NOW(), NOW()),
 
-    ('택배 문자 눌렀는데 4억 원 증발, 너무 쉽게 털려버린 이유는?', '택배 스미싱을 통한 금융 피해 사례와 예방책을 다룬 뉴스 영상',
-     'https://www.youtube.com/watch?v=jUOaGS4iIvA', 'jUOaGS4iIvA',
-     'https://img.youtube.com/vi/jUOaGS4iIvA/hqdefault.jpg', '5:01', 0, 5, true, 2, NOW(), NOW()),
+    ('술과 약을 같이 먹으면 왜 위험한가?',
+     '알코올과 각종 약(진통제·수면제·항생제 등)을 함께 복용했을 때 발생하는 위험한 반응 설명',
+     'https://www.youtube.com/watch?v=a8ij2PNbNVk', 'a8ij2PNbNVk',
+     'https://img.youtube.com/vi/a8ij2PNbNVk/hqdefault.jpg', '4:33', 0, 5, true, 2, NOW(), NOW()),
 
-    ('민생쿠폰 문자에 링크가? 스미싱 사기 주의하세요!', '정부 지원금 사칭 스미싱 문자 사례와 예방 수칙 안내',
-     'https://www.youtube.com/watch?v=U1zv8I-quNU', 'U1zv8I-quNU',
-     'https://img.youtube.com/vi/U1zv8I-quNU/hqdefault.jpg', '4:18', 0, 6, true, 2, NOW(), NOW()),
+    ('혈압약·당뇨약 임의로 중단하면 생기는 일',
+     '만성질환 약을 증상이 나아졌다고 임의로 중단했을 때 발생하는 위험한 상황과 사례 소개',
+     'https://www.youtube.com/watch?v=Yf0Gg4y0kN8', 'Yf0Gg4y0kN8',
+     'https://img.youtube.com/vi/Yf0Gg4y0kN8/hqdefault.jpg', '5:05', 0, 6, true, 2, NOW(), NOW()),
 
-    ('스미싱 문자 클릭 시 사기 피해 막는법 (3편)', '스미싱 문자 클릭 후 대처법과 피해 방지 요령을 다룬 영상',
-     'https://www.youtube.com/watch?v=_heZ9Ol4LS8', '_heZ9Ol4LS8',
-     'https://img.youtube.com/vi/_heZ9Ol4LS8/hqdefault.jpg', '4:42', 0, 7, true, 2, NOW(), NOW()),
+    ('임산부가 조심해야 할 약 - 임신 중 복약 가이드',
+     '임신 중 복용 가능한 약과 금지 약물, 반드시 의사와 상담해야 하는 이유를 설명하는 영상',
+     'https://www.youtube.com/watch?v=nCxQEzUu3Oc', 'nCxQEzUu3Oc',
+     'https://img.youtube.com/vi/nCxQEzUu3Oc/hqdefault.jpg', '6:12', 0, 7, true, 2, NOW(), NOW()),
 
-    ('제대로 알고 예방하자! 보이스 피싱·스미싱', '보이스피싱과 스미싱을 함께 다루며 올바른 예방 방법을 설명하는 영상',
-     'https://www.youtube.com/watch?v=A2HEUAtFSpo', 'A2HEUAtFSpo',
-     'https://img.youtube.com/vi/A2HEUAtFSpo/hqdefault.jpg', '3:59', 0, 8, true, 2, NOW(), NOW());
+    ('약물 과다복용 응급상황 대처법 - 119와 1339',
+     '약물 과다복용 의심 시 즉시 취해야 할 행동, 119·중독정보센터(1339) 신고 방법 안내',
+     'https://www.youtube.com/watch?v=gR6Y2_ZQi4Y', 'gR6Y2_ZQi4Y',
+     'https://img.youtube.com/vi/gR6Y2_ZQi4Y/hqdefault.jpg', '4:41', 0, 8, true, 2, NOW(), NOW());
 
--- 대출사기 영상
--- 대출사기 영상 (category_id = 3)
+
+-- ============================================
+-- 약물 상호작용 영상 (category_id = 3)
+-- ============================================
 INSERT INTO prevention_videos
 (title, description, youtube_url, youtube_id, thumbnail_url, duration, view_count, display_order, is_active, category_id, created_at, updated_at)
 VALUES
-    ('내 돈을 노린다! 대환 대출 사기 수법 공개 🚨', '대환 대출 사기, 문자와 전화로 유도하는 실제 수법 사례',
-     'https://www.youtube.com/watch?v=Mn_qD6_6YtM', 'Mn_qD6_6YtM',
-     'https://img.youtube.com/vi/Mn_qD6_6YtM/hqdefault.jpg', '4:37', 0, 1, true, 3, NOW(), NOW()),
+    ('이 약이랑 저 약 같이 먹어도 돼? - 약물 상호작용 기초',
+     '두 가지 이상의 약을 동시에 복용할 때 발생하는 상호작용의 기본 개념과 주의사항 안내',
+     'https://www.youtube.com/watch?v=Jg2TpWHvMoA', 'Jg2TpWHvMoA',
+     'https://img.youtube.com/vi/Jg2TpWHvMoA/hqdefault.jpg', '5:20', 0, 1, true, 3, NOW(), NOW()),
 
-    ('"더 싼 대출로 갈아타라"', '저금리로 갈아타라며 유도하는 대환 대출 사기 유형',
-     'https://www.youtube.com/watch?v=jXJBWdyZr4Y', 'jXJBWdyZr4Y',
-     'https://img.youtube.com/vi/jXJBWdyZr4Y/hqdefault.jpg', '3:55', 0, 2, true, 3, NOW(), NOW()),
+    ('감기약 + 두통약 같이 먹으면? - 성분 중복 주의!',
+     '시중 감기약과 두통약에 동일 성분(아세트아미노펜 등)이 겹쳐 과다복용되는 사례와 예방법',
+     'https://www.youtube.com/watch?v=X1vHGJgL0vI', 'X1vHGJgL0vI',
+     'https://img.youtube.com/vi/X1vHGJgL0vI/hqdefault.jpg', '4:37', 0, 2, true, 3, NOW(), NOW()),
 
-    ('저금리 대출 보이스피싱 사기', '“대출금리 연 1%대”를 미끼로 한 저금리 대출 보이스피싱 사례',
-     'https://www.youtube.com/watch?v=9TExyYoz1zY', '9TExyYoz1zY',
-     'https://img.youtube.com/vi/9TExyYoz1zY/hqdefault.jpg', '19:02', 0, 3, true, 3, NOW(), NOW()),
+    ('칼슘제와 철분제 같이 먹으면 안 되는 이유',
+     '칼슘제와 철분제를 동시에 복용하면 흡수를 서로 방해하는 이유와 올바른 복용 간격 안내',
+     'https://www.youtube.com/watch?v=KJKKqvZd1Cs', 'KJKKqvZd1Cs',
+     'https://img.youtube.com/vi/KJKKqvZd1Cs/hqdefault.jpg', '4:00', 0, 3, true, 3, NOW(), NOW()),
 
-    ('"대출 이자 내셔야죠", "돈 빌린 적 없는데요?"', '대출 이자 납부를 요구하는 신종 보이스피싱 경고 사례',
-     'https://www.youtube.com/watch?v=80QhMsC8w98', '80QhMsC8w98',
-     'https://img.youtube.com/vi/80QhMsC8w98/hqdefault.jpg', '3:44', 0, 4, true, 3, NOW(), NOW()),
+    ('자몽 주스가 약을 위험하게 만든다? - 음식-약물 상호작용',
+     '자몽 주스가 특정 약물의 혈중 농도를 높여 부작용을 일으키는 원리와 피해야 할 약 목록',
+     'https://www.youtube.com/watch?v=JgbfVNBfXHI', 'JgbfVNBfXHI',
+     'https://img.youtube.com/vi/JgbfVNBfXHI/hqdefault.jpg', '5:47', 0, 4, true, 3, NOW(), NOW()),
 
-    ('[친절한法] 비대면 금융과 대출 사기', '비대면 금융거래 시대, 주의해야 할 대출 사기 유형을 법적으로 안내',
-     'https://www.youtube.com/watch?v=myMRIaTHKRg', 'myMRIaTHKRg',
-     'https://img.youtube.com/vi/myMRIaTHKRg/hqdefault.jpg', '5:12', 0, 5, true, 3, NOW(), NOW()),
+    ('항생제 복용 중 유산균 먹어도 될까?',
+     '항생제 복용 중 유산균(프로바이오틱스) 섭취 시 주의할 점과 올바른 복용 간격 안내',
+     'https://www.youtube.com/watch?v=e3I0Pq4qUaU', 'e3I0Pq4qUaU',
+     'https://img.youtube.com/vi/e3I0Pq4qUaU/hqdefault.jpg', '4:52', 0, 5, true, 3, NOW(), NOW()),
 
-    ('대출 사기 주의보 ‥ 은행 약관·공문도 조작', '공문서·약관을 위조하는 신종 대출 사기 수법',
-     'https://www.youtube.com/watch?v=cAzfLcW6IfE', 'cAzfLcW6IfE',
-     'https://img.youtube.com/vi/cAzfLcW6IfE/hqdefault.jpg', '6:25', 0, 6, true, 3, NOW(), NOW()),
+    ('건강기능식품과 처방약, 함께 먹어도 될까?',
+     '오메가3·홍삼·비타민 등 건강기능식품과 처방약의 상호작용 사례와 의사·약사 상담의 중요성',
+     'https://www.youtube.com/watch?v=y0b2BxNFYL0', 'y0b2BxNFYL0',
+     'https://img.youtube.com/vi/y0b2BxNFYL0/hqdefault.jpg', '5:10', 0, 6, true, 3, NOW(), NOW()),
 
-    ('"금리 낮춰 줄게"... 대출 환승 노린 보이스피싱 기승', '대출 환승을 빌미로 개인정보를 탈취하는 사례',
-     'https://www.youtube.com/watch?v=YkWbLTWEy7s', 'YkWbLTWEy7s',
-     'https://img.youtube.com/vi/YkWbLTWEy7s/hqdefault.jpg', '4:58', 0, 7, true, 3, NOW(), NOW()),
+    ('소화제와 항생제 동시 복용하면 안 되는 이유',
+     '소화제가 항생제의 흡수율을 낮추는 원리와 복용 간격을 두어야 하는 이유 설명',
+     'https://www.youtube.com/watch?v=fXkHC6tGrKU', 'fXkHC6tGrKU',
+     'https://img.youtube.com/vi/fXkHC6tGrKU/hqdefault.jpg', '3:58', 0, 7, true, 3, NOW(), NOW()),
 
-    ('"대출금 1억 7천, 이자 16%"… 급증하는 사기 수법', '서민 대상 불법 고금리 대출 사기 사례와 주의점',
-     'https://www.youtube.com/watch?v=nMu6lrK76u0', 'nMu6lrK76u0',
-     'https://img.youtube.com/vi/nMu6lrK76u0/hqdefault.jpg', '5:47', 0, 8, true, 3, NOW(), NOW());
--- 파밍 영상
-INSERT INTO prevention_videos (title, description, youtube_url, youtube_id, thumbnail_url, duration, view_count, display_order, is_active, category_id, created_at, updated_at) VALUES
-                                                                                                                                                                                    ('파밍 피해 예방', '위장 사이트 주의', 'https://youtu.be/9vRwE4uZcAQ?t=440&si=2uztoAwlkiLEpIys', '9vRwE4uZcAQ', 'https://i.ytimg.com/vi/jpJlavoOuEw/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDzwEkgej7qk6f-eSWN8slItySAUg', '10:49', 0, 1, true, 4, NOW(), NOW()),
-                                                                                                                                                                                    ('파밍 사이트 구별법', 'URL 확인 방법', 'https://www.youtube.com/watch?v=pBxCP3LCsGE', 'pBxCP3LCsGE', 'https://i.ytimg.com/vi/pBxCP3LCsGE/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCxtUAiWXIBAa-vWVsXraKLeT8Tmg', '2:00', 0, 2, true, 4, NOW(), NOW());
+    ('여러 약 함께 먹는 노인·만성질환자 주의사항',
+     '다약제 복용(Polypharmacy)의 위험성과 복용 중인 약 목록을 항상 지참해야 하는 이유 설명',
+     'https://www.youtube.com/watch?v=jsKMno7Lfo8', 'jsKMno7Lfo8',
+     'https://img.youtube.com/vi/jsKMno7Lfo8/hqdefault.jpg', '5:00', 0, 8, true, 3, NOW(), NOW());
+
+
+-- ============================================
+-- 1인 가구 복약 관리 영상 (category_id = 4)
+-- ============================================
+INSERT INTO prevention_videos
+(title, description, youtube_url, youtube_id, thumbnail_url, duration, view_count, display_order, is_active, category_id, created_at, updated_at)
+VALUES
+    ('혼자 사는 당신의 건강, 복약 관리부터 시작하세요!',
+     '1인 가구가 스스로 복약 관리를 철저히 해야 하는 이유와 기본적인 건강 관리 팁을 제공하는 영상',
+     'https://www.youtube.com/watch?v=f1rjXFCyvlg', 'f1rjXFCyvlg',
+     'https://img.youtube.com/vi/f1rjXFCyvlg/hqdefault.jpg', '5:30', 0, 1, true, 4, NOW(), NOW()),
+
+    ('스마트 복약함으로 잊지 않고 약 챙겨 먹기',
+     '1인 가구를 위한 스마트 복약함 등 보조 도구를 활용하여 복용 시간을 놓치지 않는 방법 소개',
+     'https://www.youtube.com/watch?v=mK0gc4QoU38', 'mK0gc4QoU38',
+     'https://img.youtube.com/vi/mK0gc4QoU38/hqdefault.jpg', '4:15', 0, 2, true, 4, NOW(), NOW()),
+
+    ('혼자 아플 때 당황하지 마세요 - 1인 가구 비상약 상비법',
+     '1인 가구가 갖춰야 할 필수 비상약 목록과 각 약의 효과·보관법 안내로 응급 상황 대비',
+     'https://www.youtube.com/watch?v=hcIKY4nD9N8', 'hcIKY4nD9N8',
+     'https://img.youtube.com/vi/hcIKY4nD9N8/hqdefault.jpg', '4:50', 0, 3, true, 4, NOW(), NOW()),
+
+    ('1인 가구 건강 관리의 중요성 - 혼자 사는 당신의 건강은?',
+     '1인 가구의 건강 취약성을 설명하고, 복약 관리의 중요성을 강조하며 꾸준한 건강 관리를 독려하는 영상',
+     'https://www.youtube.com/watch?v=KR3e2lZDm30', 'KR3e2lZDm30',
+     'https://img.youtube.com/vi/KR3e2lZDm30/hqdefault.jpg', '5:00', 0, 4, true, 4, NOW(), NOW()),
+
+    ('어르신을 위한 올바른 복약 길잡이',
+     '나이가 들수록 약물 부작용이 잦아지는 이유와 여러 가지 약을 복용하는 어르신을 위한 안전한 복약 방법 안내',
+     'https://www.youtube.com/watch?v=T8wZTg1Sf5Y', 'T8wZTg1Sf5Y',
+     'https://img.youtube.com/vi/T8wZTg1Sf5Y/hqdefault.jpg', '6:00', 0, 5, true, 4, NOW(), NOW()),
+
+    ('집에 있는 비상약, 제대로 쓰고 있나요? - 올바른 약 사용법',
+     '집에 상비되어 있는 비상약들의 유효기간·보관법·사용법을 점검하고 올바른 약 사용 습관을 알려주는 영상',
+     'https://www.youtube.com/watch?v=vXubjpbCWcs', 'vXubjpbCWcs',
+     'https://img.youtube.com/vi/vXubjpbCWcs/hqdefault.jpg', '5:22', 0, 6, true, 4, NOW(), NOW()),
+
+    ('약 정리 가이드 - 우리 집 약장을 정리해봐요!',
+     '집에 흩어져 있는 약들을 효율적으로 정리하고 관리하는 방법을 알려 복약 실수를 줄이는 데 도움을 주는 영상',
+     'https://www.youtube.com/watch?v=qvH1dkGGWVE', 'qvH1dkGGWVE',
+     'https://img.youtube.com/vi/qvH1dkGGWVE/hqdefault.jpg', '4:10', 0, 7, true, 4, NOW(), NOW()),
+
+    ('복약 게이미피케이션 - 약 챙기는 게 게임처럼 재밌어진다!',
+     '포인트·뱃지·리워드 시스템을 활용해 꾸준한 복약 습관을 재미있게 만드는 방법과 앱 활용 사례 소개',
+     'https://www.youtube.com/watch?v=5nGMXXeQhMw', '5nGMXXeQhMw',
+     'https://img.youtube.com/vi/5nGMXXeQhMw/hqdefault.jpg', '4:45', 0, 8, true, 4, NOW(), NOW());
