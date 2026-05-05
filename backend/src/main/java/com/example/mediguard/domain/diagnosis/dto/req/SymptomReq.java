@@ -14,9 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SymptomReq {
 
-    @NotNull(message = "회원 ID를 입력해주세요")
-    private Long memberId; // 증상을 입력한 사용자 ID
-
     @NotBlank(message = "주 증상을 입력해주세요")
     private String symptomType; // 주 증상 (예: 두통, 복통, 기침)
 

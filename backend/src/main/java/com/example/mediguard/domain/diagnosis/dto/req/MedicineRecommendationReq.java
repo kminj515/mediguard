@@ -14,9 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MedicineRecommendationReq {
 
-    @NotNull(message = "회원 ID를 입력해주세요")
-    private Long memberId; // 추천받는 사용자 ID
-
     @NotNull(message = "증상 ID를 입력해주세요")
     private Long symptomId; // 입력한 증상 ID
 
