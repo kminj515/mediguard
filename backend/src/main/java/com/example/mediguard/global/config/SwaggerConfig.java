@@ -15,8 +15,8 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("GuardPay API")
-                        .description("GuardPay 결제 시스템 API 문서")
+                        .title("Mediguard API")
+                        .description("Mediguard 결제 시스템 API 문서")
                         .version("v1.0.0"))
                 .servers(List.of(
                         new Server()
