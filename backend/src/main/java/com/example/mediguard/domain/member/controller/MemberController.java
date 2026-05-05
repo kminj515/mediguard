@@ -44,7 +44,7 @@ public class MemberController {
 
     //임시 비번 메일 발송
     @PostMapping("/password-reset-request")
-    @Operation(summary = "비밃번호 재설정", description = "비밀번호 재설정 로직, SMTP 라이블러리 이용 ")
+    @Operation(summary = "비밀번호 재설정", description = "비밀번호 재설정 로직, SMTP 라이블러리 이용 ")
     public ApiResponse<Void> requestPasswordReset(
             @RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");

@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/videos")
 @RequiredArgsConstructor
-@Tag(name = "금융 취약 계층 교육 영상", description = "취약계층 전용 비디오 영상 페이지 ")
+@Tag(name = "복약 교육 영상", description = "복약 교육 전용 비디오 영상 페이지 ")
 public class PreventionVideoController {
 
     // 서비스 계층
