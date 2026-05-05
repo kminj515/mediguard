@@ -1,4 +1,4 @@
-package com.example.mediguard.domain.map.entity;
+package com.example.mediguard.domain.pharmacy.entity;
 
 import com.example.mediguard.global.config.BaseEntity;
 import jakarta.persistence.*;
@@ -34,8 +34,8 @@ public class Pharmacy extends BaseEntity { // 기존 BaseEntity 상속 규칙 �
     private String operatingHours; // 영업 시간 안내
 
     @Column(name = "is_night_pharmacy", nullable = false)
-    private boolean isNightPharmacy; // 심야 약국 여부
+    private boolean nightPharmacy; // 심야 약국 여부
 
     @Column(name = "is_twenty_four_hours", nullable = false)
-    private boolean isTwentyFourHours; // 24시간 영업 여부
+    private boolean twentyFourHours; // 24시간 영업 여부
 }

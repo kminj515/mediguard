@@ -12,9 +12,9 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+
 public class Member extends BaseEntity {
 
 @Id
@@ -72,6 +72,7 @@ public class Member extends BaseEntity {
         this.role = "ROLE_USER";
         this.provider = provider;
         this.providerId = providerId;
+        this.points = 100000;
     }
 
     public void addPoints(int points) {
