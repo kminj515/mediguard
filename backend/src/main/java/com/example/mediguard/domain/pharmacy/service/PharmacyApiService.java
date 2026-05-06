@@ -1,5 +1,7 @@
 package com.example.mediguard.domain.pharmacy.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.mediguard.domain.pharmacy.dto.req.PharmacySearchReq;
 import com.example.mediguard.domain.pharmacy.dto.res.PharmacyRes;
 import com.example.mediguard.domain.pharmacy.entity.Pharmacy;
@@ -12,13 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.ByteArrayInputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PharmacyService {
+public class PharmacyApiService {
 
     @Value("${pharmacy.api.key}")
     private String apiKey;
@@ -38,65 +36,59 @@ public class PharmacyService {
     private final RestTemplate restTemplate;
     private final PharmacyRepository pharmacyRepository;
 
-    // 공공API 호출 → DB 저장
     @Transactional
     public void fetchAndSavePharmacies(String city, String district) {
-        String url = apiEndpoint + "/getErmctInsttInfoInqire"
-                + "?serviceKey=" + apiKey
-                + "&Q0=" + city
-                + "&Q1=" + district
-                + "&pageNo=1"
-                + "&numOfRows=100";
-
         try {
-            String xmlResponse = restTemplate.getForObject(url, String.class);
-            List<Pharmacy> pharmacies = parseXmlToPharmacies(xmlResponse);
+            URI uri = UriComponentsBuilder
+                    .fromHttpUrl(apiEndpoint + "/getParmacyListInfoInqire")
+                    .queryParam("serviceKey", apiKey)
+                    .queryParam("Q0", city)
+                    .queryParam("Q1", district)
+                    .queryParam("pageNo", 1)
+                    .queryParam("numOfRows", 100)
+                    .build(false)
+                    .encode(StandardCharsets.UTF_8)
+                    .toUri();
+
+            String response = restTemplate.getForObject(uri, String.class);
+            log.info("📦 RAW API Response (앞 500자): {}",
+                    response != null ? response.substring(0, Math.min(500, response.length())) : "null");
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response);
+            JsonNode items = root.path("response").path("body").path("items").path("item");
+
+            List<Pharmacy> pharmacies = new ArrayList<>();
+            for (JsonNode item : items) {
+                String name = item.path("dutyName").asText(null);
+                String address = item.path("dutyAddr").asText(null);
+                String contact = item.path("dutyTel1").asText(null);
+                String latStr = item.path("wgs84Lat").asText(null);
+                String lonStr = item.path("wgs84Lon").asText(null);
+
+                if (name == null || address == null || latStr == null || lonStr == null) continue;
+
+                pharmacies.add(Pharmacy.builder()
+                        .name(name)
+                        .address(address)
+                        .contact(contact)
+                        .latitude(Double.parseDouble(latStr))
+                        .longitude(Double.parseDouble(lonStr))
+                        .operatingHours(item.path("dutyTime1s").asText(null))
+                        .nightPharmacy(false)
+                        .twentyFourHours(false)
+                        .build());
+            }
+
             pharmacyRepository.saveAll(pharmacies);
             log.info("✅ 약국 정보 {}건 저장 완료", pharmacies.size());
+
         } catch (Exception e) {
-            log.error("❌ 약국 API 호출 실패: {}", e.getMessage());
+            log.error("약국 API 호출 실패: {}", e.getMessage());
             throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
         }
     }
 
-    // XML 파싱
-    private List<Pharmacy> parseXmlToPharmacies(String xml) throws Exception {
-        List<Pharmacy> pharmacies = new ArrayList<>();
-        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
-
-        NodeList items = doc.getElementsByTagName("item");
-        for (int i = 0; i < items.getLength(); i++) {
-            Element item = (Element) items.item(i);
-            String name = getTagValue("dutyName", item);
-            String address = getTagValue("dutyAddr", item);
-            String contact = getTagValue("dutyTel1", item);
-            String latStr = getTagValue("wgs84Lat", item);
-            String lonStr = getTagValue("wgs84Lon", item);
-
-            if (name == null || address == null || latStr == null || lonStr == null) continue;
-
-            pharmacies.add(Pharmacy.builder()
-                    .name(name)
-                    .address(address)
-                    .contact(contact)
-                    .latitude(Double.parseDouble(latStr))
-                    .longitude(Double.parseDouble(lonStr))
-                    .operatingHours(getTagValue("dutyTime1s", item))
-                    .nightPharmacy(false)
-                    .twentyFourHours(false)
-                    .build());
-        }
-        return pharmacies;
-    }
-
-    private String getTagValue(String tag, Element element) {
-        NodeList nodeList = element.getElementsByTagName(tag);
-        if (nodeList.getLength() == 0) return null;
-        return nodeList.item(0).getTextContent();
-    }
-
-    // 반경 내 약국 조회
     @Transactional(readOnly = true)
     public List<PharmacyRes> searchPharmacies(PharmacySearchReq req) {
         List<Pharmacy> pharmacies;
@@ -117,7 +109,6 @@ public class PharmacyService {
                 .collect(Collectors.toList());
     }
 
-    // 약국 단건 조회
     @Transactional(readOnly = true)
     public PharmacyRes getPharmacy(Long pharmacyId) {
         Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId)
@@ -125,25 +116,18 @@ public class PharmacyService {
         return toRes(pharmacy);
     }
 
-    // 24시간 약국 조회
     @Transactional(readOnly = true)
     public List<PharmacyRes> get24HourPharmacies() {
         return pharmacyRepository.findByTwentyFourHoursTrue()
-                .stream()
-                .map(this::toRes)
-                .collect(Collectors.toList());
+                .stream().map(this::toRes).collect(Collectors.toList());
     }
 
-    // 심야 약국 조회
     @Transactional(readOnly = true)
     public List<PharmacyRes> getNightPharmacies() {
         return pharmacyRepository.findByNightPharmacyTrue()
-                .stream()
-                .map(this::toRes)
-                .collect(Collectors.toList());
+                .stream().map(this::toRes).collect(Collectors.toList());
     }
 
-    // Entity → Response DTO 변환
     private PharmacyRes toRes(Pharmacy pharmacy) {
         return PharmacyRes.builder()
                 .pharmacyId(pharmacy.getPharmacyId())
