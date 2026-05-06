@@ -1,0 +1,196 @@
+.page {
+  padding: 24px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.greeting {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0 0 4px;
+}
+
+.nickname {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.profileBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profileImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileDefault {
+  font-size: 22px;
+}
+
+/* 등급 카드 */
+.gradeCard {
+  background: var(--primary);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.gradeInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gradeTitle {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.gradeName {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pointsInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.pointsLabel {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.pointsValue {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* 섹션 공통 */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+/* 빠른 메뉴 */
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.menuCard {
+  border-radius: 14px;
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.menuCard:active {
+  transform: scale(0.96);
+}
+
+.menuIcon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.menuLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+
+/* 퀴즈 진행률 */
+.progressList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.progressItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progressCategory {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.progressPercent {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.progressBar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.empty {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: 12px;
+  text-align: center;
+}
