@@ -2,7 +2,7 @@ package com.example.mediguard.domain.pharmacy.controller;
 
 import com.example.mediguard.domain.pharmacy.dto.req.PharmacySearchReq;
 import com.example.mediguard.domain.pharmacy.dto.res.PharmacyRes;
-import com.example.mediguard.domain.pharmacy.service.PharmacyService;
+import com.example.mediguard.domain.pharmacy.service.PharmacyApiService;
 import com.example.mediguard.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,9 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/pharmacies")
 @Tag(name = "약국", description = "주변 약국 조회")
-public class PharmacyController {
+public class PharmacyApiController {
 
-    private final PharmacyService pharmacyService;
+    private final PharmacyApiService pharmacyService;
 
     @PostMapping("/search")
     @Operation(summary = "반경 내 약국 검색", description = "현재 위치 기준 반경 내 약국을 검색합니다.")
