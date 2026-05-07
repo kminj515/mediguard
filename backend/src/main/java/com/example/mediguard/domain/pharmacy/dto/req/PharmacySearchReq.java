@@ -28,6 +28,7 @@ public class PharmacySearchReq {
 
     @Min(value = 100, message = "최소 반경은 100m입니다")
     @Max(value = 10000, message = "최대 반경은 10km입니다")
+    @Builder.Default
     private Double radius = 5000.0; // 검색 반경 (기본값 5km)
 
     private Boolean nightPharmacy;   // 심야 약국만 필터링 (선택)
