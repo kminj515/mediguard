@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder; // 추가됨
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -19,6 +20,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
+import java.net.URI; // 추가됨
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -43,28 +45,25 @@ public class PharmacyApiService {
     @Transactional
     public void fetchAndSavePharmacies(String city, String district) {
         try {
-            // 1. URL 조립 (가장 중요: &_type=xml 추가)
-            // 브라우저와 동일한 결과를 내기 위해 &_type=xml을 명시적으로 붙입니다.
+            // 1. 어제 성공했던 방식 그대로 확실하게 인코딩 적용
             String urlString = "http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyListInfoInqire"
                     + "?serviceKey=" + apiKey
-                    + "&Q0=" + URLEncoder.encode(city, StandardCharsets.UTF_8)
-                    + "&Q1=" + URLEncoder.encode(district, StandardCharsets.UTF_8)
-                    + "&ORD=NAME"
-                    + "&pageNo=1"
-                    + "&numOfRows=100"
-                    + "&_type=xml"; // 서버가 JSON을 주지 못하도록 강제
+                    + "&Q0=" + URLEncoder.encode(city, "UTF-8")
+                    + "&Q1=" + URLEncoder.encode(district, "UTF-8")
+                    + "&ORD=NAME&pageNo=1&numOfRows=100&_type=xml";
 
             log.info("🚀 API 호출 주소: {}", urlString);
 
-            // 2. 호출 (String으로 받아서 내용 확인)
-            String response = restTemplate.getForObject(urlString, String.class);
+            // 2. String이 아닌 URI 객체로 변환해서 전달 (이중 인코딩 완벽 차단)
+            // RestTemplate은 URI 객체를 받으면 추가 인코딩을 절대 하지 않습니다.
+            java.net.URI uri = new java.net.URI(urlString);
+            String response = restTemplate.getForObject(uri, String.class);
 
             if (response == null || response.isEmpty()) {
                 log.error("❌ API 응답이 비어있습니다.");
                 throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
             }
 
-            // JSON이 왔는지 XML이 왔는지 로그로 확인
             log.info("📝 API 응답 수신: {}", response.substring(0, Math.min(response.length(), 200)));
 
             // 3. 파싱 및 저장
