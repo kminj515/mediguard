@@ -37,6 +37,7 @@ export default function DiagnosisPage() {
       .finally(() => setLoading(false));
   };
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { loadQuestions(); }, []);
 
   const allQuestions = parts.flatMap((p) => p.questions);

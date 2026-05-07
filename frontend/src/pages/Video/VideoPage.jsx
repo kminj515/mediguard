@@ -78,6 +78,7 @@ export default function VideoPage() {
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     const fetch = tab === 'popular' ? getPopularVideos() : getAllVideos();
     fetch

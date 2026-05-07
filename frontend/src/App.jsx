@@ -10,7 +10,6 @@ import ChatbotPage from './pages/Chatbot/ChatbotPage';
 import QuizPage from './pages/Quiz/QuizPage';
 import PharmacyPage from './pages/Pharmacy/PharmacyPage';
 import MedicinePage from './pages/Medicine/MedicinePage';
-import IntakeRecordPage from './pages/IntakeRecord/IntakeRecordPage';
 import DiagnosisPage from './pages/Diagnosis/DiagnosisPage';
 import VideoPage from './pages/Video/VideoPage';
 import ShopPage from './pages/Shop/ShopPage';
@@ -38,7 +37,6 @@ export default function App() {
           <Route path={ROUTES.QUIZ} element={<QuizPage />} />
           <Route path={ROUTES.PHARMACY} element={<PharmacyPage />} />
           <Route path={ROUTES.MEDICINE} element={<MedicinePage />} />
-          <Route path={ROUTES.INTAKE_RECORD} element={<IntakeRecordPage />} />
           <Route path={ROUTES.DIAGNOSIS} element={<DiagnosisPage />} />
           <Route path={ROUTES.VIDEO} element={<VideoPage />} />
           <Route path={ROUTES.SHOP} element={<ShopPage />} />

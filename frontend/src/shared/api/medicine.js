@@ -1,8 +1,8 @@
 import instance from './instance';
 
-export const getAllMedicines = () => instance.get('/api/v1/medicines');
+export const getAllMedicines = () => instance.get('/api/medications');
 
 export const searchMedicines = (keyword) =>
-  instance.get('/api/v1/medicines/search', { params: { keyword } });
+  instance.get('/api/medications/search', { params: { name: keyword } });
 
-export const getMedicine = (id) => instance.get(`/api/v1/medicines/${id}`);
+export const getMedicine = (id) => instance.get(`/api/medications/${id}`);

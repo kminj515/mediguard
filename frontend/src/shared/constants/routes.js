@@ -8,7 +8,6 @@ const ROUTES = {
   PHARMACY: '/pharmacy',
   MEDICINE: '/medicine',
   MEDICINE_DETAIL: '/medicine/:medicineId',
-  INTAKE_RECORD: '/intake-record',
   DIAGNOSIS: '/diagnosis',
   VIDEO: '/video',
   SHOP: '/shop',
