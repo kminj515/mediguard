@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PharmacyService {
+public class PharmacyApiService {
 
     @Value("${pharmacy.api.key}")
     private String apiKey;
@@ -41,28 +42,61 @@ public class PharmacyService {
     // 공공API 호출 → DB 저장
     @Transactional
     public void fetchAndSavePharmacies(String city, String district) {
-        String url = apiEndpoint + "/getErmctInsttInfoInqire"
-                + "?serviceKey=" + apiKey
-                + "&Q0=" + city
-                + "&Q1=" + district
-                + "&pageNo=1"
-                + "&numOfRows=100";
-
         try {
-            String xmlResponse = restTemplate.getForObject(url, String.class);
-            List<Pharmacy> pharmacies = parseXmlToPharmacies(xmlResponse);
+            // 1. URL 조립 (가장 중요: &_type=xml 추가)
+            // 브라우저와 동일한 결과를 내기 위해 &_type=xml을 명시적으로 붙입니다.
+            String urlString = "http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyListInfoInqire"
+                    + "?serviceKey=" + apiKey
+                    + "&Q0=" + URLEncoder.encode(city, StandardCharsets.UTF_8)
+                    + "&Q1=" + URLEncoder.encode(district, StandardCharsets.UTF_8)
+                    + "&ORD=NAME"
+                    + "&pageNo=1"
+                    + "&numOfRows=100"
+                    + "&_type=xml"; // 서버가 JSON을 주지 못하도록 강제
+
+            log.info("🚀 API 호출 주소: {}", urlString);
+
+            // 2. 호출 (String으로 받아서 내용 확인)
+            String response = restTemplate.getForObject(urlString, String.class);
+
+            if (response == null || response.isEmpty()) {
+                log.error("❌ API 응답이 비어있습니다.");
+                throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
+            }
+
+            // JSON이 왔는지 XML이 왔는지 로그로 확인
+            log.info("📝 API 응답 수신: {}", response.substring(0, Math.min(response.length(), 200)));
+
+            // 3. 파싱 및 저장
+            List<Pharmacy> pharmacies = parseXmlToPharmacies(response);
+
+            if (pharmacies.isEmpty()) {
+                log.warn("⚠️ 파싱된 약국 정보가 없습니다. 응답 내용을 확인하세요.");
+                throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
+            }
+
             pharmacyRepository.saveAll(pharmacies);
             log.info("✅ 약국 정보 {}건 저장 완료", pharmacies.size());
+
+        } catch (PharmacyException e) {
+            throw e;
         } catch (Exception e) {
-            log.error("❌ 약국 API 호출 실패: {}", e.getMessage());
+            log.error("❌ 약국 API 처리 중 예외 발생: {}", e.getMessage(), e);
             throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
         }
     }
 
     // XML 파싱
     private List<Pharmacy> parseXmlToPharmacies(String xml) throws Exception {
+        // 응답이 JSON 형식이면 XML 파서가 돌아가지 않으므로 체크
+        if (xml.trim().startsWith("{")) {
+            log.error("❌ 서버가 XML이 아닌 JSON을 반환했습니다: {}", xml);
+            return new ArrayList<>();
+        }
+
         List<Pharmacy> pharmacies = new ArrayList<>();
-        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
 
         NodeList items = doc.getElementsByTagName("item");

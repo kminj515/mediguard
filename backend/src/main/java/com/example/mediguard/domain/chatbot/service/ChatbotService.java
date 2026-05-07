@@ -4,7 +4,7 @@ import com.example.mediguard.domain.chatbot.dto.req.ChatWithPharmacyReq;
 import com.example.mediguard.domain.chatbot.dto.res.ChatWithPharmacyRes;
 import com.example.mediguard.domain.pharmacy.dto.req.PharmacySearchReq;
 import com.example.mediguard.domain.pharmacy.dto.res.PharmacyRes;
-import com.example.mediguard.domain.pharmacy.service.PharmacyService;
+import com.example.mediguard.domain.pharmacy.service.PharmacyApiService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class ChatbotService {
 
     private final ResourceLoader resourceLoader;
     private final GeminiClientService geminiClientService;
-    private final PharmacyService pharmacyService;
+    private final PharmacyApiService pharmacyService;
 
     @Value("${gemini.prompts.medication.system}")
     private String systemPromptPath;

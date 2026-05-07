@@ -2,10 +2,8 @@ package com.example.mediguard.domain.pharmacy.enums;
 
 import com.example.mediguard.global.code.ResponseCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public enum PharmacyErrorCode implements ResponseCode {
 
     PHARMACY_NOT_FOUND("404", "약국 정보를 찾을 수 없습니다."),
@@ -14,6 +12,11 @@ public enum PharmacyErrorCode implements ResponseCode {
 
     private final String statusCode;
     private final String message;
+
+    PharmacyErrorCode(String statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
 
     @Override
     public String getStatusCode() { return statusCode; }
