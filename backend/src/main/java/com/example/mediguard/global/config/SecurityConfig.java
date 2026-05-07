@@ -84,6 +84,7 @@ public class SecurityConfig {
                         "/",
                         "/api/v1/auth/login",// 회원가입 & 로그인 등 인증
                         "/api/v1/auth/signup",
+                        "/api/v1/members/join",
                         "/oauth2/**",            // OAuth2 소셜 로그인
                         "/login/oauth2/**",
 
@@ -95,6 +96,8 @@ public class SecurityConfig {
                         "/swagger-resources/**",
                         "/webjars/**"
                 ).permitAll()
+                .requestMatchers("/api/v1/chat/**").permitAll()
+                .requestMatchers("/api/v1/pharmacies/**").authenticated()
                 .anyRequest().authenticated()
         );
 
