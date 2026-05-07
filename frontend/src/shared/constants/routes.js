@@ -7,6 +7,7 @@ const ROUTES = {
   QUIZ_DETAIL: '/quiz/:categoryId',
   PHARMACY: '/pharmacy',
   MEDICINE: '/medicine',
+  INTAKE_RECORD: '/intake-record',
   MEDICINE_DETAIL: '/medicine/:medicineId',
   DIAGNOSIS: '/diagnosis',
   VIDEO: '/video',
