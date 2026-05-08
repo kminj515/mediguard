@@ -1,0 +1,11 @@
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  position: relative;
+  background: #f9fafb;
+}
+
+.main {
+  padding-bottom: 64px;
+}

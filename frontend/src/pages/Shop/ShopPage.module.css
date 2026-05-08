@@ -1,0 +1,54 @@
+.page { padding: 24px 20px 32px; display: flex; flex-direction: column; gap: 16px; }
+.header {}
+.title { font-size: 22px; font-weight: 700; color: var(--text); margin: 0; }
+.tabs { display: flex; gap: 8px; }
+.tab { padding: 8px 20px; border-radius: 999px; border: 1.5px solid var(--border); font-size: 14px; font-weight: 600; color: var(--text-secondary); background: #fff; transition: all 0.15s; }
+.tabActive { background: var(--primary); color: #fff; border-color: var(--primary); }
+.center { text-align: center; color: var(--text-secondary); padding: 60px 0; font-size: 15px; }
+.emptyBox { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 60px 20px; color: var(--text-secondary); font-size: 15px; }
+.emptyBox span { font-size: 40px; }
+.emptyBox p { margin: 0; }
+
+/* 상품 목록 */
+.productList { display: flex; flex-direction: column; gap: 10px; }
+.productCard { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
+.productThumb { width: 64px; height: 64px; border-radius: 12px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+.productImg { width: 100%; height: 100%; object-fit: cover; }
+.productEmoji { font-size: 28px; }
+.productInfo { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.productBrand { font-size: 12px; color: var(--text-secondary); margin: 0; }
+.productName { font-size: 15px; font-weight: 600; color: var(--text); margin: 0; }
+.productPoint { font-size: 14px; font-weight: 700; color: var(--primary); margin: 0; }
+.exchangeBtn { height: 36px; padding: 0 16px; background: var(--primary); color: #fff; font-size: 14px; font-weight: 600; border-radius: 10px; flex-shrink: 0; transition: opacity 0.15s; }
+
+/* 교환 내역 */
+.historyList { display: flex; flex-direction: column; gap: 10px; }
+.historyCard { background: #fff; border: 1.5px solid var(--border); border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+.historyThumb { width: 52px; height: 52px; border-radius: 10px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; font-size: 22px; }
+.historyImg { width: 100%; height: 100%; object-fit: cover; }
+.historyInfo { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.historyBrand { font-size: 11px; color: var(--text-secondary); margin: 0; }
+.historyName { font-size: 14px; font-weight: 600; color: var(--text); margin: 0; }
+.historyPoint { font-size: 13px; font-weight: 700; color: var(--danger); margin: 0; }
+.historyDate { font-size: 11px; color: var(--text-secondary); margin: 0; }
+.statusBadge { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #f3f4f6; color: var(--text-secondary); flex-shrink: 0; }
+.statusDone { background: #f0fdf4; color: #16a34a; }
+
+/* 교환 결과 시트 */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: flex; align-items: flex-end; }
+.sheet { width: 100%; max-width: 480px; margin: 0 auto; background: #fff; border-radius: 24px 24px 0 0; padding: 24px 20px calc(24px + env(safe-area-inset-bottom)); }
+.sheetHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.sheetTitle { font-size: 18px; font-weight: 700; margin: 0; }
+.closeBtn { font-size: 18px; color: var(--text-secondary); padding: 4px 8px; }
+.resultBody { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.resultThumb { width: 100px; height: 100px; border-radius: 16px; object-fit: cover; }
+.resultBrand { font-size: 13px; color: var(--text-secondary); margin: 0; }
+.resultName { font-size: 17px; font-weight: 700; color: var(--text); margin: 0; }
+.couponBox { background: var(--primary-light); border-radius: 12px; padding: 16px 24px; width: 100%; }
+.couponLabel { font-size: 12px; color: var(--primary); margin: 0 0 6px; font-weight: 600; }
+.couponCode { font-size: 22px; font-weight: 700; color: var(--primary); margin: 0; letter-spacing: 2px; }
+.validUntil { font-size: 13px; color: var(--text-secondary); margin: 0; }
+
+/* 로딩 오버레이 */
+.loadingOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 300; display: flex; align-items: center; justify-content: center; }
+.loadingText { background: #fff; padding: 16px 28px; border-radius: 12px; font-size: 15px; font-weight: 600; }

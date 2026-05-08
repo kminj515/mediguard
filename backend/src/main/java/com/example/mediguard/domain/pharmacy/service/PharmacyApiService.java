@@ -45,7 +45,7 @@ public class PharmacyApiService {
     @Transactional
     public void fetchAndSavePharmacies(String city, String district) {
         try {
-            // 1. 어제 성공했던 방식 그대로 확실하게 인코딩 적용
+            // 1. 인코딩 적용
             String urlString = "http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyListInfoInqire"
                     + "?serviceKey=" + apiKey
                     + "&Q0=" + URLEncoder.encode(city, "UTF-8")
@@ -172,6 +172,8 @@ public class PharmacyApiService {
                 .updatedAt(pharmacy.getUpdatedAt())
                 .build();
     }
+
+
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371000; // 지구 반지름 (m)

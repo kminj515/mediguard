@@ -1,0 +1,294 @@
+.screen {
+  padding: 20px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: calc(100dvh - 64px);
+}
+
+.center {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 60px 20px;
+  font-size: 15px;
+}
+
+/* 페이지 헤더 */
+.pageHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pageTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.pageSub {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.backBtn {
+  align-self: flex-start;
+  font-size: 14px;
+  color: var(--primary);
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 4px;
+}
+
+/* 카테고리 그리드 */
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.categoryCard {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.categoryCard:active {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.categoryIcon {
+  font-size: 32px;
+}
+
+.categoryName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* 퀴즈 목록 */
+.quizList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quizItem {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.quizItem:active {
+  border-color: var(--primary);
+}
+
+.quizIndex {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.quizQuestion {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.quizMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.levelBadge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.pointBadge {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 문제 풀기 */
+.pointTag {
+  align-self: flex-end;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.questionBox {
+  background: var(--primary);
+  border-radius: 16px;
+  padding: 24px 20px;
+}
+
+.questionText {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.optionBtn {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.optionBtn:active {
+  background: var(--primary-light);
+}
+
+.optionSelected {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+.optionNum {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.optionSelected .optionNum {
+  background: var(--primary);
+  color: #fff;
+}
+
+.optionText {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.submitBtn {
+  height: 54px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 14px;
+  margin-top: auto;
+  transition: opacity 0.15s;
+}
+
+.submitBtn:disabled {
+  opacity: 0.4;
+}
+
+/* 결과 화면 */
+.resultCard {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.resultEmoji {
+  font-size: 56px;
+}
+
+.resultTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.resultMessage {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.expBadge {
+  background: #f0fdf4;
+  color: #16a34a;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px 20px;
+  border-radius: 999px;
+  margin-top: 4px;
+}
+
+.resultActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.retryBtn {
+  height: 54px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 14px;
+}
+
+.homeBtn {
+  height: 54px;
+  background: #fff;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+}

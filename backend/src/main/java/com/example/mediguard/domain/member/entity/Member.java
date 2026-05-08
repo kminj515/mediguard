@@ -75,6 +75,8 @@ public class Member extends BaseEntity {
         this.points = 100000;
     }
 
+
+
     public void addPoints(int points) {
         this.points += points;
     }
@@ -107,6 +109,25 @@ public class Member extends BaseEntity {
         return member;
     }
 
+    // 경험치를 더할 때마다 등급을 자동으로 판별합니다.
+    public void addExp(int expToAdd) {
+        this.exp += expToAdd;
+        this.points += expToAdd;
+        updateGradeByExp(); // << 추가된 자동 등급 갱신 로직
+    }
+
+    private void updateGradeByExp() {
+        if (this.exp >= 500) {
+            this.grade = Grade.복약_달인;
+        } else if (this.exp >= 300) {
+            this.grade = Grade.복약_우수;
+        } else if (this.exp >= 100) {
+            this.grade = Grade.복약_보통;
+        } else {
+            this.grade = Grade.주의_필요;
+        }
+    }
+
     public Member updateSocialProfile(String nickname) {
         this.nickname = nickname;
         return this;
@@ -130,13 +151,6 @@ public class Member extends BaseEntity {
             this.password = passwordHash;
         }
     }
-
-
-    public void addExp(int expToAdd) {
-        this.exp += expToAdd;
-        this.points += expToAdd; // 포인트도 함께 적립할 경우
-    }
-
 
     // 프로필 이미지만 업데이트
     public void updateProfileImage(String profileImageUrl) {
