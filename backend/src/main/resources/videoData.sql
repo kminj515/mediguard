@@ -2,19 +2,12 @@
 -- MediGuard AI - 복약 안전 교육 영상 데이터
 -- ============================================
 
-
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE prevention_videos;
-TRUNCATE TABLE video_categories;
-SET FOREIGN_KEY_CHECKS = 1;
-
-
--- 카테고리 데이터 (id 명시적 추가)
-INSERT INTO video_categories (id, name, description, icon, display_order, is_active, created_at, updated_at) VALUES
-                                                                                                                 (1, '올바른 복약법',      '올바른 약 복용 방법 교육 영상',        'medication',      1, true, NOW(), NOW()),
-                                                                                                                 (2, '약 부작용 & 주의사항', '약 부작용 및 주의사항 안내 영상',      'warning_amber',   2, true, NOW(), NOW()),
-                                                                                                                 (3, '약물 상호작용',      '약물 간 상호작용 주의 교육 영상',       'compare_arrows',  3, true, NOW(), NOW()),
-                                                                                                                 (4, '1인 가구 복약 관리',  '혼자 사는 분들을 위한 복약 관리 영상',  'home_health',     4, true, NOW(), NOW());
+-- 카테고리 데이터
+INSERT INTO video_categories (name, description, icon, display_order, is_active, created_at, updated_at) VALUES
+                                                                                                             ('올바른 복약법',      '올바른 약 복용 방법 교육 영상',        'medication',      1, true, NOW(), NOW()),
+                                                                                                             ('약 부작용 & 주의사항', '약 부작용 및 주의사항 안내 영상',      'warning_amber',   2, true, NOW(), NOW()),
+                                                                                                             ('약물 상호작용',      '약물 간 상호작용 주의 교육 영상',       'compare_arrows',  3, true, NOW(), NOW()),
+                                                                                                             ('1인 가구 복약 관리',  '혼자 사는 분들을 위한 복약 관리 영상',  'home_health',     4, true, NOW(), NOW());
 
 
 -- ============================================

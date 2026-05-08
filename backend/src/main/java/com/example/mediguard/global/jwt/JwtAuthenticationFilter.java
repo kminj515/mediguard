@@ -23,6 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> SKIP_PATHS = Arrays.asList(
             "/api/auth/",
+            "/api/v1/diagnoses/",
             //"/api/quiz/",
             "/api/videos/",
             "/oauth2/",
