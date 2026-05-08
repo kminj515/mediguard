@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
-import { getAllVideos, getPopularVideos, incrementViewCount } from '../../shared/api/video';
+import {
+  getAllVideos,
+  getPopularVideos,
+  getVideoCategories,
+  getVideosByCategory,
+  incrementViewCount,
+} from '../../shared/api/video';
 import styles from './VideoPage.module.css';
 
-const TABS = [
+const BASE_TABS = [
   { key: 'all',     label: '전체' },
   { key: 'popular', label: '인기' },
 ];
@@ -72,18 +78,40 @@ function VideoPlayerSheet({ video, onClose }) {
 }
 
 export default function VideoPage() {
+  const [tabs, setTabs] = useState(BASE_TABS);
   const [tab, setTab] = useState('all');
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
 
+  // 카테고리 탭 로드
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    getVideoCategories()
+      .then(({ data }) => {
+        const cats = (data.body ?? []).map((c) => ({
+          key: `cat-${c.id}`,
+          label: c.icon ? `${c.icon} ${c.name}` : c.name,
+        }));
+        setTabs([...BASE_TABS, ...cats]);
+      })
+      .catch(() => {});
+  }, []);
+
+  // 탭 변경 시 영상 목록 로드
+  useEffect(() => {
     setLoading(true);
-    const fetch = tab === 'popular' ? getPopularVideos() : getAllVideos();
-    fetch
-      .then(({ data }) => setVideos(data.body ?? []))
-      .catch(() => {})
+    let request;
+    if (tab === 'popular') {
+      request = getPopularVideos().then(({ data }) => data.body ?? []);
+    } else if (tab.startsWith('cat-')) {
+      const categoryId = tab.split('-')[1];
+      request = getVideosByCategory(categoryId).then(({ data }) => data.body?.videos ?? []);
+    } else {
+      request = getAllVideos().then(({ data }) => data.body ?? []);
+    }
+    request
+      .then(setVideos)
+      .catch(() => setVideos([]))
       .finally(() => setLoading(false));
   }, [tab]);
 
@@ -94,7 +122,7 @@ export default function VideoPage() {
       </header>
 
       <div className={styles.tabs}>
-        {TABS.map((t) => (
+        {tabs.map((t) => (
           <button
             key={t.key}
             className={`${styles.tab} ${tab === t.key ? styles.tabActive : ''}`}
