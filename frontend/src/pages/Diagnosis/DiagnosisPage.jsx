@@ -33,7 +33,7 @@ export default function DiagnosisPage() {
     setAnswers({});
     getDiagnosisQuestions()
       .then(({ data }) => setParts(data.body ?? []))
-      .catch(() => {})
+      .catch(() => setError('문제를 불러오는데 실패했습니다. 다시 시도해주세요.'))
       .finally(() => setLoading(false));
   };
 
@@ -73,6 +73,13 @@ export default function DiagnosisPage() {
   if (result) return <ResultScreen result={result} onRetry={loadQuestions} />;
 
   if (loading) return <p className={styles.center}>불러오는 중...</p>;
+
+  if (error && parts.length === 0) return (
+    <div className={styles.page}>
+      <p className={styles.errorText}>{error}</p>
+      <button className={styles.retryBtn} onClick={loadQuestions}>다시 시도</button>
+    </div>
+  );
 
   return (
     <div className={styles.page}>
