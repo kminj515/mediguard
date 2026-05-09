@@ -46,11 +46,10 @@ public class PharmacyApiController {
     }
 
     @PostMapping("/fetch")
-    @Operation(summary = "공공API 약국 데이터 수집", description = "공공데이터 API를 호출하여 약국 정보를 DB에 저장합니다.")
-    public ApiResponse<Void> fetchPharmacies(
-            @RequestParam String city,
-            @RequestParam String district) {
-        pharmacyService.fetchAndSavePharmacies(city, district);
+    @Operation(summary = "공공API 약국 데이터 수집", description = "공공데이터 API를 호출하여 전국 약국 정보를 DB에 저장합니다.")
+    public ApiResponse<Void> fetchPharmacies() { // 파라미터(city, district) 삭제
+        // 서비스 메서드 호출 시 인자값 없이 호출
+        pharmacyService.fetchAndSavePharmacies();
         return ApiResponse.ok();
     }
 }

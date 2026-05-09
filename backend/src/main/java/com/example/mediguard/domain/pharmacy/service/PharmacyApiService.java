@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder; // 추가됨
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -20,7 +19,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
-import java.net.URI; // 추가됨
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -41,55 +40,59 @@ public class PharmacyApiService {
     private final RestTemplate restTemplate;
     private final PharmacyRepository pharmacyRepository;
 
-    // 공공API 호출 → DB 저장
+    // 공공API 호출 → 전국 데이터 DB 저장
     @Transactional
-    public void fetchAndSavePharmacies(String city, String district) {
-        try {
-            // 1. 인코딩 적용
-            String urlString = "http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyListInfoInqire"
-                    + "?serviceKey=" + apiKey
-                    + "&Q0=" + URLEncoder.encode(city, "UTF-8")
-                    + "&Q1=" + URLEncoder.encode(district, "UTF-8")
-                    + "&ORD=NAME&pageNo=1&numOfRows=100&_type=xml";
+    public void fetchAndSavePharmacies() {
+        int pageNo = 1;
+        int numOfRows = 5000; // 전국 데이터를 빠르게 가져오기 위해 최대치 설정
+        boolean hasMoreData = true;
 
-            log.info("🚀 API 호출 주소: {}", urlString);
+        while (hasMoreData) {
+            try {
+                // 1. 전국 약국 FullData 내려받기 오퍼레이션으로 변경 (h 누락 오타 반영) [cite: 7, 14]
+                String urlString = "http://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/getParmacyFullDown"
+                        + "?serviceKey=" + apiKey
+                        + "&pageNo=" + pageNo
+                        + "&numOfRows=" + numOfRows
+                        + "&_type=xml";
 
-            // 2. String이 아닌 URI 객체로 변환해서 전달 (이중 인코딩 완벽 차단)
-            // RestTemplate은 URI 객체를 받으면 추가 인코딩을 절대 하지 않습니다.
-            java.net.URI uri = new java.net.URI(urlString);
-            String response = restTemplate.getForObject(uri, String.class);
+                log.info("🚀 API 호출 주소: {}", urlString);
 
-            if (response == null || response.isEmpty()) {
-                log.error("❌ API 응답이 비어있습니다.");
-                throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
+                // 2. 이중 인코딩 방지를 위한 URI 객체 사용
+                java.net.URI uri = new java.net.URI(urlString);
+                String response = restTemplate.getForObject(uri, String.class);
+
+                if (response == null || response.isEmpty()) {
+                    log.error("❌ API 응답이 비어있습니다.");
+                    throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
+                }
+
+                log.info("📝 API 응답 수신: {}", response.substring(0, Math.min(response.length(), 200)));
+
+                // 3. 파싱 및 저장
+                List<Pharmacy> pharmacies = parseXmlToPharmacies(response);
+
+                if (pharmacies.isEmpty()) {
+                    hasMoreData = false; // 더 이상 가져올 데이터가 없음
+                    log.warn("⚠️ 파싱된 약국 정보가 없습니다. 응답 내용을 확인하세요.");
+                } else {
+                    pharmacyRepository.saveAll(pharmacies);
+                    log.info("✅ 약국 정보 {}건 저장 완료", pharmacies.size());
+                    pageNo++; // 다음 페이지로 이동
+                }
+
+            } catch (PharmacyException e) {
+                throw e;
+            } catch (Exception e) {
+                log.error("❌ 약국 API 처리 중 예외 발생: {}", e.getMessage(), e);
+                hasMoreData = false; // 에러 발생 시 루프 종료
             }
-
-            log.info("📝 API 응답 수신: {}", response.substring(0, Math.min(response.length(), 200)));
-
-            // 3. 파싱 및 저장
-            List<Pharmacy> pharmacies = parseXmlToPharmacies(response);
-
-            if (pharmacies.isEmpty()) {
-                log.warn("⚠️ 파싱된 약국 정보가 없습니다. 응답 내용을 확인하세요.");
-                throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
-            }
-
-            pharmacyRepository.saveAll(pharmacies);
-            log.info("✅ 약국 정보 {}건 저장 완료", pharmacies.size());
-
-        } catch (PharmacyException e) {
-            throw e;
-        } catch (Exception e) {
-            log.error("❌ 약국 API 처리 중 예외 발생: {}", e.getMessage(), e);
-            throw new PharmacyException(PharmacyErrorCode.PHARMACY_NOT_FOUND);
         }
     }
 
-    // XML 파싱
     private List<Pharmacy> parseXmlToPharmacies(String xml) throws Exception {
-        // 응답이 JSON 형식이면 XML 파서가 돌아가지 않으므로 체크
         if (xml.trim().startsWith("{")) {
-            log.error("❌ 서버가 XML이 아닌 JSON을 반환했습니다: {}", xml);
+            log.error("❌ 서버가 XML이 아닌 JSON을 반환했습니다.");
             return new ArrayList<>();
         }
 
@@ -107,7 +110,24 @@ public class PharmacyApiService {
             String latStr = getTagValue("wgs84Lat", item);
             String lonStr = getTagValue("wgs84Lon", item);
 
-            if (name == null || address == null || latStr == null || lonStr == null) continue;
+            if (name == null || latStr == null || lonStr == null) continue;
+
+            // ✅ 영업시간 데이터 추출 및 판별 로직 추가
+            String startTime = getTagValue("dutyTime1s", item);
+            String endTime = getTagValue("dutyTime1c", item);
+
+            // 24시간 여부 판별 (0000시작, 2400종료 기준)
+            boolean is24Hours = "0000".equals(startTime) && "2400".equals(endTime);
+
+            // 심야 약국 여부 판별 (월~토 중 종료 시간이 22:00 이상인 경우)
+            boolean isNight = false;
+            for (int d = 1; d <= 6; d++) {
+                String closeTime = getTagValue("dutyTime" + d + "c", item);
+                if (closeTime != null && Integer.parseInt(closeTime) >= 2200) {
+                    isNight = true;
+                    break;
+                }
+            }
 
             pharmacies.add(Pharmacy.builder()
                     .name(name)
@@ -115,9 +135,9 @@ public class PharmacyApiService {
                     .contact(contact)
                     .latitude(Double.parseDouble(latStr))
                     .longitude(Double.parseDouble(lonStr))
-                    .operatingHours(getTagValue("dutyTime1s", item))
-                    .nightPharmacy(false)
-                    .twentyFourHours(false)
+                    .operatingHours(startTime != null ? startTime + " - " + endTime : "정보 없음")
+                    .nightPharmacy(isNight)
+                    .twentyFourHours(is24Hours)
                     .build());
         }
         return pharmacies;
@@ -129,7 +149,6 @@ public class PharmacyApiService {
         return nodeList.item(0).getTextContent();
     }
 
-    // 반경 내 약국 조회
     @Transactional(readOnly = true)
     public List<PharmacyRes> searchPharmacies(PharmacySearchReq req) {
         List<Pharmacy> pharmacies;
@@ -157,26 +176,13 @@ public class PharmacyApiService {
     }
 
     private PharmacyRes toResWithDistance(Pharmacy pharmacy, Double distance) {
-        return PharmacyRes.builder()
-                .pharmacyId(pharmacy.getPharmacyId())
-                .name(pharmacy.getName())
-                .address(pharmacy.getAddress())
-                .latitude(pharmacy.getLatitude())
-                .longitude(pharmacy.getLongitude())
-                .contact(pharmacy.getContact())
-                .operatingHours(pharmacy.getOperatingHours())
-                .nightPharmacy(pharmacy.isNightPharmacy())
-                .twentyFourHours(pharmacy.isTwentyFourHours())
-                .distance(distance)
-                .createdAt(pharmacy.getCreatedAt())
-                .updatedAt(pharmacy.getUpdatedAt())
-                .build();
+        PharmacyRes res = toRes(pharmacy);
+        res.setDistance(distance);
+        return res;
     }
 
-
-
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371000; // 지구 반지름 (m)
+        final int R = 6371000;
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
@@ -185,7 +191,6 @@ public class PharmacyApiService {
         return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
-    // 약국 단건 조회
     @Transactional(readOnly = true)
     public PharmacyRes getPharmacy(Long pharmacyId) {
         Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId)
@@ -193,7 +198,6 @@ public class PharmacyApiService {
         return toRes(pharmacy);
     }
 
-    // 24시간 약국 조회
     @Transactional(readOnly = true)
     public List<PharmacyRes> get24HourPharmacies() {
         return pharmacyRepository.findByTwentyFourHoursTrue()
@@ -202,7 +206,6 @@ public class PharmacyApiService {
                 .collect(Collectors.toList());
     }
 
-    // 심야 약국 조회
     @Transactional(readOnly = true)
     public List<PharmacyRes> getNightPharmacies() {
         return pharmacyRepository.findByNightPharmacyTrue()
@@ -211,7 +214,6 @@ public class PharmacyApiService {
                 .collect(Collectors.toList());
     }
 
-    // Entity → Response DTO 변환
     private PharmacyRes toRes(Pharmacy pharmacy) {
         return PharmacyRes.builder()
                 .pharmacyId(pharmacy.getPharmacyId())
