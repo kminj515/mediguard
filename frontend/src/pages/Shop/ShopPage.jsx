@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProducts, exchangeProduct, getExchangeHistory } from '../../shared/api/shop';
+import { getProfile } from '../../shared/api/member';
 import styles from './ShopPage.module.css';
 
 const TABS = [
@@ -62,6 +63,17 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [exchangeResult, setExchangeResult] = useState(null);
   const [exchanging, setExchanging] = useState(false);
+  const [points, setPoints] = useState(null);
+
+  const fetchPoints = () => {
+    getProfile()
+      .then(({ data }) => setPoints(data.body?.points ?? 0))
+      .catch(() => {});
+  };
+
+  useEffect(() => {
+    fetchPoints();
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -85,6 +97,7 @@ export default function ShopPage() {
     try {
       const { data } = await exchangeProduct(product.id);
       setExchangeResult(data.body);
+      setPoints((prev) => (prev !== null ? prev - product.pricePoint : prev));
     } catch (err) {
       alert(err.response?.data?.status?.message || '교환에 실패했습니다. 포인트를 확인해주세요.');
     } finally {
@@ -96,6 +109,9 @@ export default function ShopPage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>리워드 샵</h1>
+        {points !== null && (
+          <p className={styles.pointsBadge}>보유 포인트 · <strong>{points.toLocaleString()}P</strong></p>
+        )}
       </header>
 
       <div className={styles.tabs}>
@@ -163,7 +179,7 @@ export default function ShopPage() {
       {exchangeResult && (
         <ExchangeResultSheet
           result={exchangeResult}
-          onClose={() => { setExchangeResult(null); setTab('history'); }}
+          onClose={() => { setExchangeResult(null); setTab('history'); fetchPoints(); }}
         />
       )}
     </div>
