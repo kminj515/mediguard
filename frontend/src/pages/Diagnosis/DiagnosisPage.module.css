@@ -48,3 +48,23 @@
 .scoreLabel { font-size: 20px; color: var(--text-secondary); }
 .resultMessage { font-size: 15px; color: var(--text-secondary); margin: 0; text-align: center; line-height: 1.6; }
 .retryBtn { height: 54px; background: var(--primary); color: #fff; font-size: 16px; font-weight: 600; border-radius: 14px; margin-top: auto; }
+.gradeBadge { font-size: 15px; font-weight: 700; padding: 6px 20px; border-radius: 999px; }
+
+/* 탭 */
+.tabs { display: flex; gap: 8px; }
+.tab { padding: 8px 20px; border-radius: 999px; border: 1.5px solid var(--border); font-size: 14px; font-weight: 600; color: var(--text-secondary); background: #fff; transition: all 0.15s; }
+.tabActive { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* 진단 기록 */
+.historyList { display: flex; flex-direction: column; gap: 10px; }
+.historyBest { font-size: 13px; color: var(--text-secondary); margin: 0 0 4px; }
+.historyBest strong { color: var(--primary); }
+.historyCard { background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
+.historyCardLeft { display: flex; flex-direction: column; gap: 4px; }
+.historyGrade { font-size: 15px; font-weight: 700; }
+.historyDate { font-size: 12px; color: var(--text-secondary); }
+.historyScore { font-size: 22px; font-weight: 700; color: var(--primary); }
+.historyEmpty { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 60px 20px; color: var(--text-secondary); font-size: 15px; }
+.historyEmpty span { font-size: 40px; }
+.historyEmpty p { margin: 0; }
+.historyEmptySub { font-size: 13px; color: var(--text-secondary); margin: 0; }
