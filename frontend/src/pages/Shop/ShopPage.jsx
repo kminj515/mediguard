@@ -35,12 +35,21 @@ function ExchangeResultSheet({ result, onClose }) {
   );
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
+function resolveThumb(url) {
+  if (!url) return null;
+  if (url.startsWith('http')) return url;
+  return `${API_BASE}/${url.replace(/^\.\//, '')}`;
+}
+
 function ProductCard({ product, onExchange }) {
+  const thumb = resolveThumb(product.thumbnail);
   return (
     <div className={styles.productCard}>
       <div className={styles.productThumb}>
-        {product.thumbnail
-          ? <img src={product.thumbnail} alt={product.name} className={styles.productImg} />
+        {thumb
+          ? <img src={thumb} alt={product.name} className={styles.productImg} />
           : <span className={styles.productEmoji}>🎁</span>
         }
       </div>
@@ -150,8 +159,8 @@ export default function ShopPage() {
             {history.map((h) => (
               <div key={h.exchangeId} className={styles.historyCard}>
                 <div className={styles.historyThumb}>
-                  {h.thumbnail
-                    ? <img src={h.thumbnail} alt={h.productName} className={styles.historyImg} />
+                  {resolveThumb(h.thumbnail)
+                    ? <img src={resolveThumb(h.thumbnail)} alt={h.productName} className={styles.historyImg} />
                     : <span>🎁</span>
                   }
                 </div>

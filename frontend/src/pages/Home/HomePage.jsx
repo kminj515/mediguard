@@ -13,6 +13,7 @@ const QUICK_MENUS = [
   { label: '복약 기록',   icon: '💊', route: ROUTES.INTAKE_RECORD,  color: '#f0f9ff' },
   { label: '약 검색',    icon: '🔍', route: ROUTES.MEDICINE,        color: '#fefce8' },
   { label: '진단 테스트', icon: '📋', route: ROUTES.DIAGNOSIS,       color: '#fef2f2' },
+  { label: '교육 영상',   icon: '🎬', route: ROUTES.VIDEO,          color: '#f5f3ff' },
 ];
 
 export default function HomePage() {
