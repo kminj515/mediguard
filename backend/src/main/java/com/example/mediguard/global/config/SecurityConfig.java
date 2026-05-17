@@ -94,7 +94,10 @@ public class SecurityConfig {
                         "/swagger-ui.html",
                         "/v3/api-docs/**",
                         "/swagger-resources/**",
-                        "/webjars/**"
+                        "/webjars/**",
+
+                        // 정적 리소스 (이미지 등)
+                        "/image/**"
                 ).permitAll()
                 .requestMatchers("/api/v1/chat/**").permitAll()
                 .requestMatchers("/api/v1/pharmacies/**").authenticated()
