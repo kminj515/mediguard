@@ -2,6 +2,22 @@ import { useState, useEffect } from 'react';
 import { getDiagnosisQuestions, submitDiagnosis } from '../../shared/api/diagnosis';
 import styles from './DiagnosisPage.module.css';
 
+const HISTORY_KEY = 'diagnosis_history';
+
+const loadHistory = () => {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) ?? []; }
+  catch { return []; }
+};
+
+const saveHistory = (entry) => {
+  const prev = loadHistory();
+  localStorage.setItem(HISTORY_KEY, JSON.stringify([entry, ...prev].slice(0, 20)));
+};
+
+const GRADE_COLOR = {
+  '우수': '#16a34a', '양호': '#2563eb', '보통': '#d97706', '미흡': '#dc2626',
+};
+
 function ResultScreen({ result, onRetry }) {
   return (
     <div className={styles.resultPage}>
@@ -12,6 +28,14 @@ function ResultScreen({ result, onRetry }) {
           <span className={styles.scoreValue}>{result.totalScore}</span>
           <span className={styles.scoreLabel}>점</span>
         </div>
+        {result.grade && (
+          <span
+            className={styles.gradeBadge}
+            style={{ background: `${GRADE_COLOR[result.grade] ?? '#6b7280'}20`, color: GRADE_COLOR[result.grade] ?? '#6b7280' }}
+          >
+            {result.grade}
+          </span>
+        )}
         <p className={styles.resultMessage}>{result.message}</p>
       </div>
       <button className={styles.retryBtn} onClick={onRetry}>다시 진단하기</button>
@@ -19,7 +43,42 @@ function ResultScreen({ result, onRetry }) {
   );
 }
 
+function HistoryScreen() {
+  const history = loadHistory();
+  if (history.length === 0) {
+    return (
+      <div className={styles.historyEmpty}>
+        <span>📋</span>
+        <p>아직 진단 기록이 없어요.</p>
+        <p className={styles.historyEmptySub}>진단을 완료하면 결과가 여기에 쌓여요.</p>
+      </div>
+    );
+  }
+  const scores = history.map((h) => h.totalScore);
+  const best = Math.max(...scores);
+  return (
+    <div className={styles.historyList}>
+      <p className={styles.historyBest}>최고 점수 · <strong>{best}점</strong></p>
+      {history.map((h, i) => (
+        <div key={i} className={styles.historyCard}>
+          <div className={styles.historyCardLeft}>
+            <span
+              className={styles.historyGrade}
+              style={{ color: GRADE_COLOR[h.grade] ?? '#6b7280' }}
+            >
+              {h.grade ?? '-'}
+            </span>
+            <span className={styles.historyDate}>{h.date}</span>
+          </div>
+          <span className={styles.historyScore}>{h.totalScore}점</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function DiagnosisPage() {
+  const [tab, setTab] = useState('diagnose');
   const [parts, setParts] = useState([]);
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
@@ -63,6 +122,11 @@ export default function DiagnosisPage() {
     try {
       const { data } = await submitDiagnosis(payload);
       setResult(data.body);
+      saveHistory({
+        totalScore: data.body.totalScore,
+        grade: data.body.grade,
+        date: new Date().toLocaleDateString('ko-KR'),
+      });
     } catch {
       setError('제출에 실패했습니다. 다시 시도해주세요.');
     } finally {
@@ -72,9 +136,9 @@ export default function DiagnosisPage() {
 
   if (result) return <ResultScreen result={result} onRetry={loadQuestions} />;
 
-  if (loading) return <p className={styles.center}>불러오는 중...</p>;
+  if (loading && tab === 'diagnose') return <p className={styles.center}>불러오는 중...</p>;
 
-  if (error && parts.length === 0) return (
+  if (error && parts.length === 0 && tab === 'diagnose') return (
     <div className={styles.page}>
       <p className={styles.errorText}>{error}</p>
       <button className={styles.retryBtn} onClick={loadQuestions}>다시 시도</button>
@@ -85,8 +149,23 @@ export default function DiagnosisPage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>복약 역량 진단</h1>
-        <p className={styles.sub}>총 {totalCount}문항 · {answeredCount}개 완료</p>
       </header>
+
+      <div className={styles.tabs}>
+        <button
+          className={`${styles.tab} ${tab === 'diagnose' ? styles.tabActive : ''}`}
+          onClick={() => setTab('diagnose')}
+        >진단하기</button>
+        <button
+          className={`${styles.tab} ${tab === 'history' ? styles.tabActive : ''}`}
+          onClick={() => setTab('history')}
+        >진단 기록</button>
+      </div>
+
+      {tab === 'history' && <HistoryScreen />}
+
+      {tab === 'diagnose' && <>
+        <p className={styles.sub}>총 {totalCount}문항 · {answeredCount}개 완료</p>
 
       {/* 진행 바 */}
       <div className={styles.progressBar}>
@@ -124,15 +203,16 @@ export default function DiagnosisPage() {
         ))}
       </div>
 
-      {error && <p className={styles.errorText}>{error}</p>}
+        {error && <p className={styles.errorText}>{error}</p>}
 
-      <button
-        className={styles.submitBtn}
-        onClick={handleSubmit}
-        disabled={submitting}
-      >
-        {submitting ? '채점 중...' : `제출하기 (${answeredCount}/${totalCount})`}
-      </button>
+        <button
+          className={styles.submitBtn}
+          onClick={handleSubmit}
+          disabled={submitting}
+        >
+          {submitting ? '채점 중...' : `제출하기 (${answeredCount}/${totalCount})`}
+        </button>
+      </>}
     </div>
   );
 }

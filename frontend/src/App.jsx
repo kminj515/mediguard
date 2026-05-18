@@ -15,6 +15,7 @@ import DiagnosisPage from './pages/Diagnosis/DiagnosisPage';
 import VideoPage from './pages/Video/VideoPage';
 import ShopPage from './pages/Shop/ShopPage';
 import MyPage from './pages/MyPage/MyPage';
+import RecommendPage from './pages/Recommend/RecommendPage';
 
 function PrivateRoute({ children }) {
   const accessToken = useAuthStore((s) => s.accessToken);
@@ -43,6 +44,7 @@ export default function App() {
           <Route path={ROUTES.VIDEO} element={<VideoPage />} />
           <Route path={ROUTES.SHOP} element={<ShopPage />} />
           <Route path={ROUTES.MY_PAGE} element={<MyPage />} />
+          <Route path={ROUTES.RECOMMEND} element={<RecommendPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

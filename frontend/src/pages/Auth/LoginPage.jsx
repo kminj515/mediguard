@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../../shared/api/auth';
@@ -27,6 +28,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const { data } = await login(form.email, form.password);
+
       setAuth({ accessToken: data.body.accessToken });
       navigate(ROUTES.HOME, { replace: true });
     } catch (err) {

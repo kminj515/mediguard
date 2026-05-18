@@ -13,7 +13,19 @@ const KAKAO_KEY = import.meta.env.VITE_KAKAO_MAP_KEY;
 
 function loadKakaoScript() {
   return new Promise((resolve, reject) => {
+    // index.html에서 autoload=true로 이미 로드 완료된 경우
     if (window.kakao?.maps) { resolve(); return; }
+
+    // kakao 객체는 있으나 maps가 아직 준비 안 된 경우 (index.html 스크립트 로딩 중 race condition)
+    if (window.kakao && !window.kakao.maps) {
+      const poll = setInterval(() => {
+        if (window.kakao?.maps) { clearInterval(poll); resolve(); }
+      }, 50);
+      setTimeout(() => { clearInterval(poll); reject(new Error('timeout')); }, 10000);
+      return;
+    }
+
+    // 완전히 미로드 상태 → 동적 로드 (fallback)
     const script = document.createElement('script');
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_KEY}&autoload=false`;
     script.onload = () => window.kakao.maps.load(resolve);

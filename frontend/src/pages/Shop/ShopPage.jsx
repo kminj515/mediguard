@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProducts, exchangeProduct, getExchangeHistory } from '../../shared/api/shop';
+import { getProfile } from '../../shared/api/member';
 import styles from './ShopPage.module.css';
 
 const TABS = [
@@ -34,12 +35,21 @@ function ExchangeResultSheet({ result, onClose }) {
   );
 }
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
+function resolveThumb(url) {
+  if (!url) return null;
+  if (url.startsWith('http')) return url;
+  return `${API_BASE}/${url.replace(/^\.\//, '')}`;
+}
+
 function ProductCard({ product, onExchange }) {
+  const thumb = resolveThumb(product.thumbnail);
   return (
     <div className={styles.productCard}>
       <div className={styles.productThumb}>
-        {product.thumbnail
-          ? <img src={product.thumbnail} alt={product.name} className={styles.productImg} />
+        {thumb
+          ? <img src={thumb} alt={product.name} className={styles.productImg} />
           : <span className={styles.productEmoji}>🎁</span>
         }
       </div>
@@ -62,6 +72,17 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [exchangeResult, setExchangeResult] = useState(null);
   const [exchanging, setExchanging] = useState(false);
+  const [points, setPoints] = useState(null);
+
+  const fetchPoints = () => {
+    getProfile()
+      .then(({ data }) => setPoints(data.body?.points ?? 0))
+      .catch(() => {});
+  };
+
+  useEffect(() => {
+    fetchPoints();
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -85,6 +106,7 @@ export default function ShopPage() {
     try {
       const { data } = await exchangeProduct(product.id);
       setExchangeResult(data.body);
+      setPoints((prev) => (prev !== null ? prev - product.pricePoint : prev));
     } catch (err) {
       alert(err.response?.data?.status?.message || '교환에 실패했습니다. 포인트를 확인해주세요.');
     } finally {
@@ -96,6 +118,9 @@ export default function ShopPage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>리워드 샵</h1>
+        {points !== null && (
+          <p className={styles.pointsBadge}>보유 포인트 · <strong>{points.toLocaleString()}P</strong></p>
+        )}
       </header>
 
       <div className={styles.tabs}>
@@ -134,8 +159,8 @@ export default function ShopPage() {
             {history.map((h) => (
               <div key={h.exchangeId} className={styles.historyCard}>
                 <div className={styles.historyThumb}>
-                  {h.thumbnail
-                    ? <img src={h.thumbnail} alt={h.productName} className={styles.historyImg} />
+                  {resolveThumb(h.thumbnail)
+                    ? <img src={resolveThumb(h.thumbnail)} alt={h.productName} className={styles.historyImg} />
                     : <span>🎁</span>
                   }
                 </div>
@@ -163,7 +188,7 @@ export default function ShopPage() {
       {exchangeResult && (
         <ExchangeResultSheet
           result={exchangeResult}
-          onClose={() => { setExchangeResult(null); setTab('history'); }}
+          onClose={() => { setExchangeResult(null); setTab('history'); fetchPoints(); }}
         />
       )}
     </div>

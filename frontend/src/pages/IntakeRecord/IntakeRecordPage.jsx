@@ -24,6 +24,47 @@ const groupByDate = (records) => {
   return Object.entries(map).sort((a, b) => new Date(b[0]) - new Date(a[0]));
 };
 
+const DAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
+
+function WeeklyChart({ records }) {
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    return d;
+  });
+
+  const counts = days.map((d) => {
+    const key = formatDate(d.toISOString());
+    return records.filter((r) => formatDate(r.intakeTime) === key).length;
+  });
+
+  const maxCount = Math.max(...counts, 1);
+  const total = counts.reduce((a, b) => a + b, 0);
+
+  return (
+    <div className={styles.chartBox}>
+      <div className={styles.chartHeader}>
+        <span className={styles.chartTitle}>최근 7일 복약 현황</span>
+        <span className={styles.chartTotal}>총 {total}회</span>
+      </div>
+      <div className={styles.chartBars}>
+        {days.map((d, i) => (
+          <div key={i} className={styles.chartCol}>
+            <span className={styles.chartCount}>{counts[i] > 0 ? counts[i] : ''}</span>
+            <div className={styles.chartBarWrap}>
+              <div
+                className={styles.chartBar}
+                style={{ height: `${(counts[i] / maxCount) * 100}%` }}
+              />
+            </div>
+            <span className={styles.chartLabel}>{DAY_LABELS[d.getDay()]}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function MedicineSearchInput({ onSelect }) {
   const [keyword, setKeyword] = useState('');
   const [results, setResults] = useState([]);
@@ -226,6 +267,8 @@ export default function IntakeRecordPage() {
         <h1 className={styles.title}>복약 기록</h1>
         <p className={styles.sub}>복용한 약을 기록하세요</p>
       </header>
+
+      {!loading && records.length > 0 && <WeeklyChart records={records} />}
 
       {loading ? (
         <p className={styles.center}>불러오는 중...</p>
