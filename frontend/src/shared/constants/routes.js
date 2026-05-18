@@ -13,6 +13,7 @@ const ROUTES = {
   VIDEO: '/video',
   SHOP: '/shop',
   MY_PAGE: '/mypage',
+  RECOMMEND: '/recommend',
 };
 
 export default ROUTES;

@@ -1,6 +1,8 @@
 .page { padding: 24px 20px 32px; display: flex; flex-direction: column; gap: 16px; }
-.header {}
+.header { display: flex; align-items: center; justify-content: space-between; }
 .title { font-size: 22px; font-weight: 700; color: var(--text); margin: 0; }
+.pointsBadge { font-size: 13px; color: var(--text-secondary); margin: 0; }
+.pointsBadge strong { color: var(--primary); font-weight: 700; }
 .tabs { display: flex; gap: 8px; }
 .tab { padding: 8px 20px; border-radius: 999px; border: 1.5px solid var(--border); font-size: 14px; font-weight: 600; color: var(--text-secondary); background: #fff; transition: all 0.15s; }
 .tabActive { background: var(--primary); color: #fff; border-color: var(--primary); }

@@ -6,12 +6,14 @@ import ROUTES from '../../shared/constants/routes';
 import styles from './HomePage.module.css';
 
 const QUICK_MENUS = [
-  { label: 'AI 복약 상담', icon: '💬', route: ROUTES.CHATBOT, color: '#eff6ff' },
-  { label: '복약 퀴즈',   icon: '📝', route: ROUTES.QUIZ,    color: '#f0fdf4' },
-  { label: '약국 찾기',   icon: '🏥', route: ROUTES.PHARMACY, color: '#fff7ed' },
-  { label: '복약 기록',   icon: '💊', route: ROUTES.INTAKE_RECORD, color: '#fdf4ff' },
-  { label: '약 검색',    icon: '🔍', route: ROUTES.MEDICINE,  color: '#f0f9ff' },
-  { label: '진단 테스트', icon: '📋', route: ROUTES.DIAGNOSIS, color: '#fefce8' },
+  { label: 'AI 복약 상담', icon: '💬', route: ROUTES.CHATBOT,       color: '#eff6ff' },
+  { label: '증상별 약 추천', icon: '🩺', route: ROUTES.RECOMMEND,    color: '#fdf4ff' },
+  { label: '복약 퀴즈',   icon: '📝', route: ROUTES.QUIZ,           color: '#f0fdf4' },
+  { label: '약국 찾기',   icon: '🏥', route: ROUTES.PHARMACY,       color: '#fff7ed' },
+  { label: '복약 기록',   icon: '💊', route: ROUTES.INTAKE_RECORD,  color: '#f0f9ff' },
+  { label: '약 검색',    icon: '🔍', route: ROUTES.MEDICINE,        color: '#fefce8' },
+  { label: '진단 테스트', icon: '📋', route: ROUTES.DIAGNOSIS,       color: '#fef2f2' },
+  { label: '교육 영상',   icon: '🎬', route: ROUTES.VIDEO,          color: '#f5f3ff' },
 ];
 
 export default function HomePage() {
