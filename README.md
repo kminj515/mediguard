@@ -107,4 +107,4 @@ npm start
 ---
 
 ## 실행화면
-[3. W-4조_이미지_작품 소개 사진.pdf](https://github.com/user-attachments/files/27948826/3.W-4._._.pdf)
+<img width="2073" height="945" alt="3  W-4조_이미지_작품 소개 사진_page-0001" src="https://github.com/user-attachments/assets/adfa3f06-0154-4628-9adc-d1f32c61ba86" />
