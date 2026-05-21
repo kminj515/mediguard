@@ -5,15 +5,28 @@ import { getProgress } from '../../shared/api/quiz';
 import ROUTES from '../../shared/constants/routes';
 import styles from './HomePage.module.css';
 
+const FEATURED_MENUS = [
+  {
+    label: 'AI 복약 상담',
+    desc: '궁금한 약, AI에게 바로 물어보세요',
+    icon: '💬',
+    route: ROUTES.CHATBOT,
+  },
+  {
+    label: '약국 찾기',
+    desc: '내 주변 가까운 약국을 찾아드려요',
+    icon: '🏥',
+    route: ROUTES.PHARMACY,
+  },
+];
+
 const QUICK_MENUS = [
-  { label: 'AI 복약 상담', icon: '💬', route: ROUTES.CHATBOT,       color: '#eff6ff' },
-  { label: '증상별 약 추천', icon: '🩺', route: ROUTES.RECOMMEND,    color: '#fdf4ff' },
-  { label: '복약 퀴즈',   icon: '📝', route: ROUTES.QUIZ,           color: '#f0fdf4' },
-  { label: '약국 찾기',   icon: '🏥', route: ROUTES.PHARMACY,       color: '#fff7ed' },
-  { label: '복약 기록',   icon: '💊', route: ROUTES.INTAKE_RECORD,  color: '#f0f9ff' },
-  { label: '약 검색',    icon: '🔍', route: ROUTES.MEDICINE,        color: '#fefce8' },
-  { label: '진단 테스트', icon: '📋', route: ROUTES.DIAGNOSIS,       color: '#fef2f2' },
-  { label: '교육 영상',   icon: '🎬', route: ROUTES.VIDEO,          color: '#f5f3ff' },
+  { label: '증상별 추천', icon: '🩺', route: ROUTES.RECOMMEND },
+  { label: '복약 퀴즈',   icon: '📝', route: ROUTES.QUIZ },
+  { label: '복약 기록',   icon: '💊', route: ROUTES.INTAKE_RECORD },
+  { label: '약 검색',    icon: '🔍', route: ROUTES.MEDICINE },
+  { label: '진단 테스트', icon: '📋', route: ROUTES.DIAGNOSIS },
+  { label: '교육 영상',   icon: '🎬', route: ROUTES.VIDEO },
 ];
 
 export default function HomePage() {
@@ -34,7 +47,8 @@ export default function HomePage() {
 
   return (
     <div className={styles.page}>
-      {/* 상단 헤더 */}
+
+      {/* 헤더 */}
       <header className={styles.header}>
         <div>
           <p className={styles.greeting}>안녕하세요 👋</p>
@@ -54,64 +68,85 @@ export default function HomePage() {
         </button>
       </header>
 
-      {/* 포인트 카드 */}
+      {/* 포인트 히어로 카드 */}
       {!loading && profile && (
-        <div className={styles.gradeCard}>
-          <div className={styles.gradeInfo}>
-            <span className={styles.gradeTitle}>💊 MediGuard</span>
-            <span className={styles.gradeName}>복약 안전 도우미</span>
+        <div className={styles.heroCard}>
+          <div className={styles.heroLeft}>
+            <span className={styles.heroAppName}>💊 MediGuard</span>
+            <span className={styles.heroSubtitle}>복약 안전 도우미</span>
           </div>
-          <div className={styles.pointsInfo}>
-            <span className={styles.pointsLabel}>포인트</span>
-            <span className={styles.pointsValue}>{profile.points?.toLocaleString() ?? 0}P</span>
+          <div className={styles.heroRight}>
+            <span className={styles.heroPointLabel}>포인트</span>
+            <span className={styles.heroPoint}>
+              {(profile.points ?? 0).toLocaleString()}
+              <span className={styles.heroPointUnit}>P</span>
+            </span>
           </div>
         </div>
       )}
 
-      {/* 빠른 메뉴 */}
+      {/* 주요 기능 */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>바로가기</h2>
-        <div className={styles.menuGrid}>
-          {QUICK_MENUS.map(({ label, icon, route, color }) => (
+        <h2 className={styles.sectionTitle}>주요 기능</h2>
+        <div className={styles.featuredGrid}>
+          {FEATURED_MENUS.map(({ label, desc, icon, route }) => (
             <button
               key={route}
-              className={styles.menuCard}
-              style={{ background: color }}
+              className={styles.featuredCard}
               onClick={() => navigate(route)}
             >
-              <span className={styles.menuIcon}>{icon}</span>
-              <span className={styles.menuLabel}>{label}</span>
+              <span className={styles.featuredIcon}>{icon}</span>
+              <p className={styles.featuredLabel}>{label}</p>
+              <p className={styles.featuredDesc}>{desc}</p>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* 바로가기 */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>바로가기</h2>
+        <div className={styles.quickGrid}>
+          {QUICK_MENUS.map(({ label, icon, route }) => (
+            <button
+              key={route}
+              className={styles.quickItem}
+              onClick={() => navigate(route)}
+            >
+              <span className={styles.quickIcon}>{icon}</span>
+              <span className={styles.quickLabel}>{label}</span>
             </button>
           ))}
         </div>
       </section>
 
       {/* 퀴즈 진행률 */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>퀴즈 진행률</h2>
-        {loading ? (
-          <p className={styles.empty}>불러오는 중...</p>
-        ) : progress.length === 0 ? (
-          <p className={styles.empty}>아직 푼 퀴즈가 없어요. 퀴즈를 시작해보세요!</p>
-        ) : (
-          <div className={styles.progressList}>
-            {progress.map((item) => (
-              <div key={item.categoryId} className={styles.progressItem}>
-                <div className={styles.progressHeader}>
-                  <span className={styles.progressCategory}>{item.categoryName}</span>
-                  <span className={styles.progressPercent}>{item.progress}%</span>
+      {!loading && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>퀴즈 진행률</h2>
+          {progress.length === 0 ? (
+            <p className={styles.empty}>아직 푼 퀴즈가 없어요. 퀴즈를 시작해보세요!</p>
+          ) : (
+            <div className={styles.progressCard}>
+              {progress.map((item) => (
+                <div key={item.categoryId} className={styles.progressItem}>
+                  <div className={styles.progressHeader}>
+                    <span className={styles.progressCategory}>{item.categoryName}</span>
+                    <span className={styles.progressPercent}>{item.progress}%</span>
+                  </div>
+                  <div className={styles.progressBar}>
+                    <div
+                      className={styles.progressFill}
+                      style={{ width: `${item.progress}%` }}
+                    />
+                  </div>
                 </div>
-                <div className={styles.progressBar}>
-                  <div
-                    className={styles.progressFill}
-                    style={{ width: `${item.progress}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
     </div>
   );
 }

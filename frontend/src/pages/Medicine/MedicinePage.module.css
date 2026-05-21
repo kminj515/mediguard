@@ -1,50 +1,293 @@
-.page { padding: 24px 20px 32px; display: flex; flex-direction: column; gap: 16px; }
-.header {}
-.title { font-size: 22px; font-weight: 700; color: var(--text); margin: 0; }
+.page {
+  padding: 24px 20px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 헤더 */
+.header { display: flex; flex-direction: column; gap: 4px; }
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* 검색창 */
 .searchBox {
-  display: flex; align-items: center; gap: 10px;
-  background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f3f4f6;
+  border-radius: 14px;
+  padding: 0 16px;
+  height: 54px;
 }
+
 .searchIcon { font-size: 18px; flex-shrink: 0; }
+
 .searchInput {
-  flex: 1; height: 50px; border: none; outline: none;
-  font-size: 15px; color: var(--text); background: transparent; font-family: inherit;
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: var(--text);
+  background: transparent;
+  font-family: inherit;
 }
-.searchInput::placeholder { color: #c1c5cc; }
-.clearBtn { font-size: 16px; color: var(--text-secondary); padding: 4px; }
-.center { text-align: center; color: var(--text-secondary); padding: 60px 0; font-size: 15px; }
-.count { font-size: 13px; color: var(--text-secondary); margin: 0; }
-.emptyBox { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 60px 20px; color: var(--text-secondary); font-size: 15px; }
-.emptyIcon { font-size: 40px; }
-.list { display: flex; flex-direction: column; gap: 8px; }
+
+.searchInput::placeholder { color: #adb5bd; }
+
+.clearBtn {
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: #e5e7eb;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 결과 */
+.count {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.center {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 60px 0;
+  font-size: 15px;
+}
+
+.emptyBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 60px 20px;
+}
+
+.emptyIcon { font-size: 44px; }
+
+.emptyText {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.emptySub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* 카드 */
+.list { display: flex; flex-direction: column; gap: 10px; }
+
 .card {
-  background: #fff; border: 1.5px solid var(--border); border-radius: 14px;
-  padding: 14px 16px; display: flex; align-items: center; gap: 10px; text-align: left;
-  transition: border-color 0.15s;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  transition: transform 0.1s;
+  width: 100%;
 }
-.card:active { border-color: var(--primary); }
-.cardMain { flex: 1; display: flex; flex-direction: column; gap: 3px; }
-.medicineName { font-size: 15px; font-weight: 600; color: var(--text); }
-.medicineCategory { font-size: 12px; color: var(--text-secondary); }
-.cardTags { display: flex; gap: 4px; flex-wrap: wrap; }
-.tag { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px; }
-.tagGreen { background: #f0fdf4; color: #16a34a; }
-.tagRed { background: #fef2f2; color: #dc2626; }
+
+.card:active { transform: scale(0.98); }
+
+.cardIcon {
+  width: 44px;
+  height: 44px;
+  background: var(--primary-light);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.cardMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.medicineName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.medicineCategory {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.cardTags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.tagSmall {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.cardArrow {
+  font-size: 22px;
+  color: #d1d5db;
+  flex-shrink: 0;
+}
+
+/* 태그 공통 */
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.tagGreen  { background: #f0fdf4; color: #16a34a; }
+.tagRed    { background: #fef2f2; color: #dc2626; }
 .tagOrange { background: #fff7ed; color: #d97706; }
-.cardArrow { font-size: 20px; color: #c1c5cc; flex-shrink: 0; }
 
 /* 상세 시트 */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: flex; align-items: flex-end; }
-.sheet {
-  width: 100%; max-width: 480px; margin: 0 auto; background: #fff;
-  border-radius: 24px 24px 0 0; padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-  max-height: 85dvh; overflow-y: auto;
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
 }
-.sheetHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.sheetTitle { font-size: 18px; font-weight: 700; margin: 0; color: var(--text); }
-.closeBtn { font-size: 18px; color: var(--text-secondary); padding: 4px 8px; }
-.detailBody { display: flex; flex-direction: column; gap: 14px; }
-.detailRow { display: flex; flex-direction: column; gap: 4px; }
-.detailLabel { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
-.detailValue { font-size: 14px; color: var(--text); line-height: 1.6; }
-.tagRow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+
+.sheet {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--surface);
+  border-radius: 24px 24px 0 0;
+  padding: 12px 20px calc(32px + env(safe-area-inset-bottom));
+  max-height: 88dvh;
+  overflow-y: auto;
+}
+
+.sheetHandle {
+  width: 36px;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  margin: 0 auto 20px;
+}
+
+.sheetTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.sheetIconWrap {
+  width: 52px;
+  height: 52px;
+  background: var(--primary-light);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.sheetTopInfo { flex: 1; }
+
+.sheetCategory {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 2px;
+  font-weight: 500;
+}
+
+.sheetName {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.closeBtn {
+  font-size: 15px;
+  color: var(--text-secondary);
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 6px 9px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.tagRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.detailBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.detailRow {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detailRow:last-child { border-bottom: none; }
+
+.detailLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.detailValue {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0;
+}

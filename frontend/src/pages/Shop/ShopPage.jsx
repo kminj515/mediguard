@@ -8,15 +8,22 @@ const TABS = [
   { key: 'history', label: '교환 내역' },
 ];
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+
+function resolveThumb(url) {
+  if (!url) return null;
+  if (url.startsWith('http')) return url;
+  return `${API_BASE}/${url.replace(/^\.\//, '')}`;
+}
+
 function ExchangeResultSheet({ result, onClose }) {
   return (
-    <div className={styles.overlay}>
-      <div className={styles.sheet}>
-        <div className={styles.sheetHeader}>
-          <h2 className={styles.sheetTitle}>교환 완료!</h2>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
-        </div>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.sheetHandle} />
         <div className={styles.resultBody}>
+          <span className={styles.resultEmoji}>🎉</span>
+          <h2 className={styles.sheetTitle}>교환 완료!</h2>
           {result.thumbnail && (
             <img src={result.thumbnail} alt={result.name} className={styles.resultThumb} />
           )}
@@ -29,18 +36,11 @@ function ExchangeResultSheet({ result, onClose }) {
           {result.validUntil && (
             <p className={styles.validUntil}>유효기간 · {result.validUntil}</p>
           )}
+          <button className={styles.closeSheetBtn} onClick={onClose}>확인</button>
         </div>
       </div>
     </div>
   );
-}
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
-
-function resolveThumb(url) {
-  if (!url) return null;
-  if (url.startsWith('http')) return url;
-  return `${API_BASE}/${url.replace(/^\.\//, '')}`;
 }
 
 function ProductCard({ product, onExchange }) {
@@ -59,7 +59,7 @@ function ProductCard({ product, onExchange }) {
         <p className={styles.productPoint}>{product.pricePoint?.toLocaleString()}P</p>
       </div>
       <button className={styles.exchangeBtn} onClick={() => onExchange(product)}>
-        교환
+        교환하기
       </button>
     </div>
   );
@@ -80,9 +80,7 @@ export default function ShopPage() {
       .catch(() => {});
   };
 
-  useEffect(() => {
-    fetchPoints();
-  }, []);
+  useEffect(() => { fetchPoints(); }, []);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -116,13 +114,21 @@ export default function ShopPage() {
 
   return (
     <div className={styles.page}>
+      {/* 헤더 */}
       <header className={styles.header}>
-        <h1 className={styles.title}>리워드 샵</h1>
+        <div>
+          <h1 className={styles.title}>리워드 샵</h1>
+          <p className={styles.sub}>포인트로 상품을 교환하세요</p>
+        </div>
         {points !== null && (
-          <p className={styles.pointsBadge}>보유 포인트 · <strong>{points.toLocaleString()}P</strong></p>
+          <div className={styles.pointsBadge}>
+            <span className={styles.pointsLabel}>보유</span>
+            <span className={styles.pointsValue}>{points.toLocaleString()}P</span>
+          </div>
         )}
       </header>
 
+      {/* 탭 */}
       <div className={styles.tabs}>
         {TABS.map((t) => (
           <button
@@ -135,15 +141,17 @@ export default function ShopPage() {
         ))}
       </div>
 
+      {/* 콘텐츠 */}
       {loading ? (
         <p className={styles.center}>불러오는 중...</p>
       ) : tab === 'shop' ? (
         products.length === 0 ? (
           <div className={styles.emptyBox}>
-            <span>🎁</span><p>상품이 없습니다.</p>
+            <span className={styles.emptyIcon}>🎁</span>
+            <p className={styles.emptyText}>상품이 없습니다</p>
           </div>
         ) : (
-          <div className={styles.productList}>
+          <div className={styles.productGrid}>
             {products.map((p) => (
               <ProductCard key={p.id} product={p} onExchange={handleExchange} />
             ))}
@@ -152,7 +160,8 @@ export default function ShopPage() {
       ) : (
         history.length === 0 ? (
           <div className={styles.emptyBox}>
-            <span>📋</span><p>교환 내역이 없습니다.</p>
+            <span className={styles.emptyIcon}>📋</span>
+            <p className={styles.emptyText}>교환 내역이 없습니다</p>
           </div>
         ) : (
           <div className={styles.historyList}>
