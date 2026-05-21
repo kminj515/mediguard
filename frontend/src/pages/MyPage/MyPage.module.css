@@ -1,8 +1,8 @@
 .page {
-  padding: 24px 20px 32px;
+  padding: 24px 20px 100px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .center {
@@ -12,46 +12,36 @@
   font-size: 15px;
 }
 
-/* 프로필 카드 */
+/* 프로필 카드 - 중앙 정렬 */
 .profileCard {
   background: var(--primary);
-  border-radius: 20px;
-  padding: 28px 24px;
+  border-radius: 24px;
+  padding: 32px 24px 28px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .avatarWrap {
-  width: 68px;
-  height: 68px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.25);
+  border: 3px solid rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  flex-shrink: 0;
+  margin-bottom: 4px;
 }
 
-.avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.avatar { width: 100%; height: 100%; object-fit: cover; }
 
-.avatarDefault {
-  font-size: 32px;
-}
-
-.profileInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+.avatarDefault { font-size: 36px; }
 
 .nickname {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #fff;
   margin: 0;
@@ -59,15 +49,15 @@
 
 .email {
   font-size: 13px;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.7);
   margin: 0;
 }
 
-/* 포인트/EXP */
+/* 포인트 / EXP */
 .statsRow {
-  background: #fff;
-  border: 1.5px solid var(--border);
-  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
   padding: 20px;
   display: flex;
   align-items: center;
@@ -82,28 +72,27 @@
 }
 
 .statValue {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text);
+  font-size: 28px;
+  font-weight: 800;
 }
 
+.statBlue  { color: var(--primary); }
+.statGreen { color: #16a34a; }
+
 .statLabel {
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--text-secondary);
 }
 
 .statDivider {
   width: 1px;
-  height: 36px;
+  height: 40px;
   background: var(--border);
 }
 
 /* 섹션 */
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+.section { display: flex; flex-direction: column; gap: 12px; }
 
 .sectionTitle {
   font-size: 17px;
@@ -120,20 +109,21 @@
 }
 
 .levelCard {
-  background: #fff;
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
-.levelValue {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--primary);
+.levelBadge {
+  font-size: 15px;
+  font-weight: 800;
+  padding: 5px 16px;
+  border-radius: 999px;
 }
 
 .levelCategory {
@@ -145,9 +135,9 @@
 
 /* 설정 메뉴 */
 .menuList {
-  background: #fff;
-  border: 1.5px solid var(--border);
-  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
   overflow: hidden;
 }
 
@@ -155,26 +145,31 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   padding: 16px 18px;
   border-bottom: 1px solid var(--border);
   text-align: left;
   transition: background 0.12s;
 }
 
-.menuList .menuItem:last-child {
-  border-bottom: none;
+.menuList .menuItem:last-child { border-bottom: none; }
+
+.menuItem:active { background: #f9fafb; }
+
+.menuIconWrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
-.menuItem:active {
-  background: #f9fafb;
-}
-
-.menuIcon {
-  font-size: 20px;
-  width: 28px;
-  text-align: center;
-}
+.iconBlue   { background: #eff6ff; }
+.iconPurple { background: #f5f3ff; }
+.iconRed    { background: #fef2f2; }
 
 .menuLabel {
   flex: 1;
@@ -185,18 +180,16 @@
 
 .menuArrow {
   font-size: 20px;
-  color: #c1c5cc;
+  color: #d1d5db;
 }
 
-.menuItemDanger .menuLabel {
-  color: var(--danger);
-}
+.menuItemDanger .menuLabel { color: var(--danger); }
 
 /* 수정 폼 오버레이 */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.45);
   z-index: 200;
   display: flex;
   align-items: flex-end;
@@ -206,11 +199,19 @@
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
-  background: #fff;
+  background: var(--surface);
   border-radius: 24px 24px 0 0;
-  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+  padding: 12px 20px calc(32px + env(safe-area-inset-bottom));
   max-height: 90dvh;
   overflow-y: auto;
+}
+
+.sheetHandle {
+  width: 36px;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  margin: 0 auto 20px;
 }
 
 .sheetHeader {
@@ -220,56 +221,43 @@
   margin-bottom: 20px;
 }
 
-.sheetTitle {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0;
-}
+.sheetTitle { font-size: 18px; font-weight: 700; margin: 0; }
 
 .closeBtn {
-  font-size: 18px;
+  font-size: 15px;
   color: var(--text-secondary);
-  padding: 4px 8px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 6px 9px;
+  line-height: 1;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+.form { display: flex; flex-direction: column; gap: 16px; }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.field { display: flex; flex-direction: column; gap: 8px; }
 
 .label {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-secondary);
 }
 
 .input {
   height: 50px;
   padding: 0 14px;
-  border: 1.5px solid var(--border);
+  background: #f3f4f6;
+  border: none;
   border-radius: 12px;
   font-size: 15px;
   color: var(--text);
   outline: none;
   font-family: inherit;
-  transition: border-color 0.15s;
+  transition: box-shadow 0.15s;
 }
 
-.input:focus {
-  border-color: var(--primary);
-}
+.input:focus { box-shadow: 0 0 0 2px var(--primary); }
 
-.divider {
-  height: 1px;
-  background: var(--border);
-}
+.divider { height: 1px; background: var(--border); }
 
 .sectionLabel {
   font-size: 13px;
@@ -283,7 +271,7 @@
   color: var(--danger);
   background: #fef2f2;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   margin: 0;
 }
 
@@ -292,11 +280,9 @@
   background: var(--primary);
   color: #fff;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 14px;
   transition: opacity 0.15s;
 }
 
-.saveBtn:disabled {
-  opacity: 0.5;
-}
+.saveBtn:disabled { opacity: 0.5; }
