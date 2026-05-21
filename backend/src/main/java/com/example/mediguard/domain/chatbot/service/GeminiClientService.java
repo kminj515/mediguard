@@ -15,14 +15,30 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-class GeminiClientService {
+public class GeminiClientService {
 
     private final GeminiConfig geminiConfig;
     private final WebClient webClient;
 
+    public String getCompletionWithImage(String base64Image, String mimeType, String prompt) {
+        String url = buildUrl();
+        GeminiRequest requestBody = GeminiRequest.ofImage(base64Image, mimeType, prompt);
+        try {
+            GeminiResponse response = webClient.post()
+                    .uri(url)
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(GeminiResponse.class)
+                    .block();
+            return parseResponse(response);
+        } catch (Exception e) {
+            log.error("Gemini Vision API call failed", e);
+            throw new ChatException(ChatErrorCode.CHAT_API_ERROR);
+        }
+    }
+
     public String getCompletion(String systemPrompt, String userPrompt) {
-        String url = String.format("https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s",
-                geminiConfig.getModel(), geminiConfig.getKey());
+        String url = buildUrl();
 
         String finalPrompt = combineAndTruncate(systemPrompt, userPrompt);
 
@@ -42,6 +58,11 @@ class GeminiClientService {
             log.error("Gemini API call failed", e);
             throw new ChatException(ChatErrorCode.CHAT_API_ERROR);
         }
+    }
+
+    private String buildUrl() {
+        return String.format("https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s",
+                geminiConfig.getModel(), geminiConfig.getKey());
     }
 
     private String parseResponse(GeminiResponse response) {

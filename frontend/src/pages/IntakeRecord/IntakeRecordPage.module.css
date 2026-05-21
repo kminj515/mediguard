@@ -396,3 +396,108 @@
   transition: height 0.3s ease;
 }
 .chartLabel { font-size: 11px; color: #6b7280; }
+
+/* 카메라 스캔 */
+.scanSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hiddenInput { display: none; }
+
+.scanBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border: 2px dashed #2563eb;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.scanBtn:hover:not(:disabled) { background: #dbeafe; }
+.scanBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.scanIcon { font-size: 20px; }
+
+.scanSpinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #bfdbfe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.scanPreviewWrap {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  max-height: 160px;
+}
+
+.scanPreview {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
+
+.scanOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(37, 99, 235, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.scanOverlayText {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.scanResult {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.scanResultIcon { font-size: 18px; flex-shrink: 0; }
+
+.scanResultTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #15803d;
+  margin: 0 0 2px;
+}
+
+.scanResultSub {
+  font-size: 12px;
+  color: #374151;
+  margin: 0 0 2px;
+}
+
+.scanResultHint {
+  font-size: 11px;
+  color: #6b7280;
+  margin: 4px 0 0;
+}
