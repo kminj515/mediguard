@@ -6,6 +6,12 @@ import useAuthStore from '../../store/authStore';
 import ROUTES from '../../shared/constants/routes';
 import styles from './MyPage.module.css';
 
+const LEVEL_COLOR = {
+  1: { bg: '#f0fdf4', color: '#16a34a' },
+  2: { bg: '#fff7ed', color: '#d97706' },
+  3: { bg: '#fef2f2', color: '#dc2626' },
+};
+
 // ──────────────────────────────────────────
 // 프로필 수정 폼
 // ──────────────────────────────────────────
@@ -46,8 +52,9 @@ function EditProfileSheet({ profile, onClose, onSaved }) {
   };
 
   return (
-    <div className={styles.overlay}>
-      <div className={styles.sheet}>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.sheetHandle} />
         <div className={styles.sheetHeader}>
           <h2 className={styles.sheetTitle}>프로필 수정</h2>
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
@@ -133,15 +140,12 @@ export default function MyPage() {
     loadData();
   };
 
-  const LEVEL_LABEL = { 1: 'LV.1', 2: 'LV.2', 3: 'LV.3' };
-
-  if (loading) {
-    return <p className={styles.center}>불러오는 중...</p>;
-  }
+  if (loading) return <p className={styles.center}>불러오는 중...</p>;
 
   return (
     <div className={styles.page}>
-      {/* 프로필 카드 */}
+
+      {/* 프로필 카드 - 중앙 정렬 */}
       <div className={styles.profileCard}>
         <div className={styles.avatarWrap}>
           {profile?.profileImageUrl
@@ -149,40 +153,46 @@ export default function MyPage() {
             : <span className={styles.avatarDefault}>👤</span>
           }
         </div>
-        <div className={styles.profileInfo}>
-          <h1 className={styles.nickname}>{profile?.nickname ?? '-'}</h1>
-          <p className={styles.email}>{profile?.email ?? '-'}</p>
-        </div>
+        <h1 className={styles.nickname}>{profile?.nickname ?? '-'}</h1>
+        <p className={styles.email}>{profile?.email ?? '-'}</p>
       </div>
 
       {/* 포인트 / EXP */}
       <div className={styles.statsRow}>
         <div className={styles.statBox}>
-          <span className={styles.statValue}>
+          <span className={`${styles.statValue} ${styles.statBlue}`}>
             {(profile?.points ?? 0).toLocaleString()}
           </span>
           <span className={styles.statLabel}>포인트</span>
         </div>
         <div className={styles.statDivider} />
         <div className={styles.statBox}>
-          <span className={styles.statValue}>{profile?.exp ?? 0}</span>
+          <span className={`${styles.statValue} ${styles.statGreen}`}>
+            {profile?.exp ?? 0}
+          </span>
           <span className={styles.statLabel}>EXP</span>
         </div>
       </div>
 
-      {/* 카테고리별 퀴즈 레벨 */}
+      {/* 퀴즈 레벨 */}
       {levels.length > 0 && (
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>퀴즈 레벨</h2>
           <div className={styles.levelGrid}>
-            {levels.map((lv) => (
-              <div key={lv.categoryId} className={styles.levelCard}>
-                <span className={styles.levelValue}>
-                  {LEVEL_LABEL[lv.level] ?? `LV.${lv.level}`}
-                </span>
-                <span className={styles.levelCategory}>{lv.categoryName}</span>
-              </div>
-            ))}
+            {levels.map((lv) => {
+              const color = LEVEL_COLOR[lv.level] ?? LEVEL_COLOR[1];
+              return (
+                <div key={lv.categoryId} className={styles.levelCard}>
+                  <span
+                    className={styles.levelBadge}
+                    style={{ background: color.bg, color: color.color }}
+                  >
+                    LV.{lv.level}
+                  </span>
+                  <span className={styles.levelCategory}>{lv.categoryName}</span>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
@@ -192,12 +202,12 @@ export default function MyPage() {
         <h2 className={styles.sectionTitle}>설정</h2>
         <div className={styles.menuList}>
           <button className={styles.menuItem} onClick={() => setShowEdit(true)}>
-            <span className={styles.menuIcon}>✏️</span>
+            <span className={`${styles.menuIconWrap} ${styles.iconBlue}`}>✏️</span>
             <span className={styles.menuLabel}>프로필 수정</span>
             <span className={styles.menuArrow}>›</span>
           </button>
           <button className={styles.menuItem} onClick={() => navigate(ROUTES.SHOP)}>
-            <span className={styles.menuIcon}>🎁</span>
+            <span className={`${styles.menuIconWrap} ${styles.iconPurple}`}>🎁</span>
             <span className={styles.menuLabel}>리워드 샵</span>
             <span className={styles.menuArrow}>›</span>
           </button>
@@ -205,7 +215,7 @@ export default function MyPage() {
             className={`${styles.menuItem} ${styles.menuItemDanger}`}
             onClick={handleLogout}
           >
-            <span className={styles.menuIcon}>🚪</span>
+            <span className={`${styles.menuIconWrap} ${styles.iconRed}`}>🚪</span>
             <span className={styles.menuLabel}>로그아웃</span>
             <span className={styles.menuArrow}>›</span>
           </button>

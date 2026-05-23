@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getIntakeRecords, createIntakeRecord } from '../../shared/api/intakeRecord';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { getIntakeRecords, createIntakeRecord, scanMedicineImage } from '../../shared/api/intakeRecord';
 import { searchMedicines } from '../../shared/api/medicine';
 import styles from './IntakeRecordPage.module.css';
 
@@ -65,10 +65,17 @@ function WeeklyChart({ records }) {
   );
 }
 
-function MedicineSearchInput({ onSelect }) {
+function MedicineSearchInput({ onSelect, scanKeyword }) {
   const [keyword, setKeyword] = useState('');
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
+
+  useEffect(() => {
+    if (scanKeyword) {
+      setKeyword(scanKeyword);
+      setResults([]);
+    }
+  }, [scanKeyword]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -125,6 +132,42 @@ function AddRecordForm({ onClose, onSaved }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
+  const [scanning, setScanning] = useState(false);
+  const [scanPreview, setScanPreview] = useState(null);
+  const [scanKeyword, setScanKeyword] = useState('');
+  const [scanInfo, setScanInfo] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleScanFile = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setScanPreview(URL.createObjectURL(file));
+    setScanning(true);
+    setError('');
+    setScanInfo(null);
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const { data } = await scanMedicineImage(formData);
+      const result = data.body;
+      if (result.medicineName) {
+        setScanKeyword(result.medicineName);
+        setScanInfo(result);
+        if (result.memo) setMemo(result.memo);
+      } else {
+        setError('약 정보를 인식하지 못했습니다. 사진을 다시 찍어보세요.');
+      }
+    } catch {
+      setError('이미지 분석에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setScanning(false);
+      e.target.value = '';
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedMedicine) { setError('약을 선택해주세요.'); return; }
@@ -155,9 +198,65 @@ function AddRecordForm({ onClose, onSaved }) {
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
+          {/* 카메라 스캔 버튼 */}
+          <div className={styles.scanSection}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className={styles.hiddenInput}
+              onChange={handleScanFile}
+            />
+            <button
+              type="button"
+              className={styles.scanBtn}
+              onClick={() => fileInputRef.current?.click()}
+              disabled={scanning}
+            >
+              {scanning ? (
+                <>
+                  <span className={styles.scanSpinner} />
+                  AI 분석 중...
+                </>
+              ) : (
+                <>
+                  <span className={styles.scanIcon}>📷</span>
+                  약 봉투 사진으로 자동 입력
+                </>
+              )}
+            </button>
+
+            {scanPreview && (
+              <div className={styles.scanPreviewWrap}>
+                <img src={scanPreview} alt="스캔한 약 사진" className={styles.scanPreview} />
+                {scanning && (
+                  <div className={styles.scanOverlay}>
+                    <span className={styles.scanOverlayText}>AI 분석 중...</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {scanInfo && !scanning && (
+              <div className={styles.scanResult}>
+                <span className={styles.scanResultIcon}>✅</span>
+                <div>
+                  <p className={styles.scanResultTitle}>AI 인식 완료</p>
+                  {scanInfo.dosage && (
+                    <p className={styles.scanResultSub}>{scanInfo.dosage}</p>
+                  )}
+                  {!scanInfo.matched && (
+                    <p className={styles.scanResultHint}>DB에서 약을 찾지 못했습니다. 아래에서 직접 선택해주세요.</p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className={styles.field}>
             <label className={styles.label}>약 선택 *</label>
-            <MedicineSearchInput onSelect={setSelectedMedicine} />
+            <MedicineSearchInput onSelect={setSelectedMedicine} scanKeyword={scanKeyword} />
             {selectedMedicine && (
               <div className={styles.selectedMedicine}>
                 <span className={styles.selectedIcon}>💊</span>

@@ -1,8 +1,8 @@
 .page {
-  padding: 24px 20px 16px;
+  padding: 24px 20px 100px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
 }
 
 /* 헤더 */
@@ -19,7 +19,7 @@
 }
 
 .nickname {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text);
   margin: 0;
@@ -47,48 +47,58 @@
   font-size: 22px;
 }
 
-/* 등급 카드 */
-.gradeCard {
+/* 히어로 카드 */
+.heroCard {
   background: var(--primary);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 24px 22px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   color: #fff;
+  min-height: 110px;
 }
 
-.gradeInfo {
+.heroLeft {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-.gradeTitle {
+.heroAppName {
   font-size: 13px;
-  opacity: 0.8;
+  opacity: 0.75;
+  font-weight: 500;
 }
 
-.gradeName {
-  font-size: 18px;
+.heroSubtitle {
+  font-size: 20px;
   font-weight: 700;
+  line-height: 1.2;
 }
 
-.pointsInfo {
+.heroRight {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
 }
 
-.pointsLabel {
-  font-size: 13px;
-  opacity: 0.8;
+.heroPointLabel {
+  font-size: 12px;
+  opacity: 0.75;
 }
 
-.pointsValue {
-  font-size: 20px;
-  font-weight: 700;
+.heroPoint {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.heroPointUnit {
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 2px;
 }
 
 /* 섹션 공통 */
@@ -105,52 +115,104 @@
   margin: 0;
 }
 
-/* 빠른 메뉴 */
-.menuGrid {
+/* 주요 기능 - 큰 카드 2열 */
+.featuredGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.featuredCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  text-align: left;
+}
+
+.featuredCard:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.featuredIcon {
+  font-size: 32px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.featuredLabel {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.featuredDesc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 바로가기 - 작은 아이콘 3열 */
+.quickGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
-.menuCard {
+.quickItem {
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 16px 8px;
+  padding: 16px 8px 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  border: none;
   cursor: pointer;
   transition: transform 0.1s;
 }
 
-.menuCard:active {
-  transform: scale(0.96);
+.quickItem:active {
+  transform: scale(0.95);
 }
 
-.menuIcon {
-  font-size: 28px;
+.quickIcon {
+  font-size: 26px;
   line-height: 1;
 }
 
-.menuLabel {
-  font-size: 12px;
+.quickLabel {
+  font-size: 11px;
   font-weight: 600;
   color: var(--text);
   text-align: center;
+  word-break: keep-all;
 }
 
 /* 퀴즈 진행률 */
-.progressList {
+.progressCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .progressItem {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .progressHeader {
@@ -167,13 +229,13 @@
 
 .progressPercent {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--primary);
 }
 
 .progressBar {
-  height: 8px;
-  background: #e5e7eb;
+  height: 6px;
+  background: var(--border);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -182,15 +244,16 @@
   height: 100%;
   background: var(--primary);
   border-radius: 999px;
-  transition: width 0.4s ease;
+  transition: width 0.5s ease;
 }
 
 .empty {
   font-size: 14px;
   color: var(--text-secondary);
   margin: 0;
-  padding: 16px;
+  padding: 20px;
   background: var(--surface);
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
   text-align: center;
 }

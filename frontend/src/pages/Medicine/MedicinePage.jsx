@@ -4,44 +4,68 @@ import styles from './MedicinePage.module.css';
 
 function MedicineDetailSheet({ medicine, onClose }) {
   return (
-    <div className={styles.overlay}>
-      <div className={styles.sheet}>
-        <div className={styles.sheetHeader}>
-          <h2 className={styles.sheetTitle}>{medicine.name}</h2>
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.sheet} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.sheetHandle} />
+
+        <div className={styles.sheetTop}>
+          <div className={styles.sheetIconWrap}>
+            <span>💊</span>
+          </div>
+          <div className={styles.sheetTopInfo}>
+            <p className={styles.sheetCategory}>{medicine.category ?? '일반약'}</p>
+            <h2 className={styles.sheetName}>{medicine.name}</h2>
+          </div>
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
         </div>
+
+        <div className={styles.tagRow}>
+          <span className={`${styles.tag} ${medicine.emptyStomachSafe ? styles.tagGreen : styles.tagRed}`}>
+            {medicine.emptyStomachSafe ? '✓ 공복 복용 가능' : '✗ 공복 복용 주의'}
+          </span>
+          {medicine.drowsiness && (
+            <span className={`${styles.tag} ${styles.tagOrange}`}>⚠ 졸음 유발</span>
+          )}
+        </div>
+
         <div className={styles.detailBody}>
-          <div className={styles.detailRow}>
-            <span className={styles.detailLabel}>분류</span>
-            <span className={styles.detailValue}>{medicine.category ?? '-'}</span>
-          </div>
-          <div className={styles.detailRow}>
-            <span className={styles.detailLabel}>효능</span>
-            <span className={styles.detailValue}>{medicine.efficacy ?? '-'}</span>
-          </div>
-          <div className={styles.detailRow}>
-            <span className={styles.detailLabel}>주의사항</span>
-            <span className={styles.detailValue}>{medicine.precautions ?? '-'}</span>
-          </div>
-          <div className={styles.detailRow}>
-            <span className={styles.detailLabel}>부작용</span>
-            <span className={styles.detailValue}>{medicine.sideEffects ?? '-'}</span>
-          </div>
-          <div className={styles.detailRow}>
-            <span className={styles.detailLabel}>주요 성분</span>
-            <span className={styles.detailValue}>{medicine.activeIngredient ?? '-'}</span>
-          </div>
-          <div className={styles.tagRow}>
-            <span className={`${styles.tag} ${medicine.emptyStomachSafe ? styles.tagGreen : styles.tagRed}`}>
-              {medicine.emptyStomachSafe ? '공복 복용 가능' : '공복 복용 주의'}
-            </span>
-            {medicine.drowsiness && (
-              <span className={`${styles.tag} ${styles.tagOrange}`}>졸음 유발</span>
-            )}
-          </div>
+          {[
+            { label: '효능', value: medicine.efficacy },
+            { label: '주의사항', value: medicine.precautions },
+            { label: '부작용', value: medicine.sideEffects },
+            { label: '주요 성분', value: medicine.activeIngredient },
+          ].map(({ label, value }) =>
+            value ? (
+              <div key={label} className={styles.detailRow}>
+                <span className={styles.detailLabel}>{label}</span>
+                <p className={styles.detailValue}>{value}</p>
+              </div>
+            ) : null
+          )}
         </div>
       </div>
     </div>
+  );
+}
+
+function MedicineCard({ medicine, onClick }) {
+  return (
+    <button className={styles.card} onClick={onClick}>
+      <div className={styles.cardIcon}>💊</div>
+      <div className={styles.cardMain}>
+        <span className={styles.medicineName}>{medicine.name}</span>
+        <span className={styles.medicineCategory}>{medicine.category}</span>
+        <div className={styles.cardTags}>
+          {medicine.emptyStomachSafe && (
+            <span className={`${styles.tagSmall} ${styles.tagGreen}`}>공복 가능</span>
+          )}
+          {medicine.drowsiness && (
+            <span className={`${styles.tagSmall} ${styles.tagOrange}`}>졸음</span>
+          )}
+        </div>
+      </div>
+      <span className={styles.cardArrow}>›</span>
+    </button>
   );
 }
 
@@ -75,6 +99,7 @@ export default function MedicinePage() {
     <div className={styles.page}>
       <header className={styles.header}>
         <h1 className={styles.title}>약 검색</h1>
+        <p className={styles.sub}>약 이름으로 복용 정보를 확인하세요</p>
       </header>
 
       <div className={styles.searchBox}>
@@ -95,32 +120,15 @@ export default function MedicinePage() {
       ) : medicines.length === 0 ? (
         <div className={styles.emptyBox}>
           <span className={styles.emptyIcon}>🔍</span>
-          <p>검색 결과가 없습니다.</p>
+          <p className={styles.emptyText}>검색 결과가 없습니다</p>
+          <p className={styles.emptySub}>다른 키워드로 검색해보세요</p>
         </div>
       ) : (
         <>
           <p className={styles.count}>총 {medicines.length}개</p>
           <div className={styles.list}>
             {medicines.map((m) => (
-              <button
-                key={m.medicineId}
-                className={styles.card}
-                onClick={() => setSelected(m)}
-              >
-                <div className={styles.cardMain}>
-                  <span className={styles.medicineName}>{m.name}</span>
-                  <span className={styles.medicineCategory}>{m.category}</span>
-                </div>
-                <div className={styles.cardTags}>
-                  {m.emptyStomachSafe && (
-                    <span className={`${styles.tag} ${styles.tagGreen}`}>공복 가능</span>
-                  )}
-                  {m.drowsiness && (
-                    <span className={`${styles.tag} ${styles.tagOrange}`}>졸음</span>
-                  )}
-                </div>
-                <span className={styles.cardArrow}>›</span>
-              </button>
+              <MedicineCard key={m.medicineId} medicine={m} onClick={() => setSelected(m)} />
             ))}
           </div>
         </>
