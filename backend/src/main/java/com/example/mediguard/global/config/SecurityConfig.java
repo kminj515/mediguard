@@ -97,7 +97,10 @@ public class SecurityConfig {
                         "/webjars/**",
 
                         // 정적 리소스 (이미지 등)
-                        "/image/**"
+                        "/image/**",
+
+                        // 에러 페이지 (인증 오류 중 재귀 401 방지)
+                        "/error"
                 ).permitAll()
                 .requestMatchers("/api/v1/chat/**").permitAll()
                 .requestMatchers("/api/v1/pharmacies/**").authenticated()
