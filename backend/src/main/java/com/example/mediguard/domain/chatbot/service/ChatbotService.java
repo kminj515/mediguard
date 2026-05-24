@@ -29,10 +29,10 @@ public class ChatbotService {
     private final GeminiClientService geminiClientService;
     private final PharmacyApiService pharmacyService;
 
-    @Value("${gemini.prompts.medication.system}")
+    @Value("${gemini.prompts.medication.system:classpath:prompts/medication-system.txt}")
     private String systemPromptPath;
 
-    @Value("${gemini.prompts.medication.user}")
+    @Value("${gemini.prompts.medication.user:classpath:prompts/medication-user.txt}")
     private String userPromptPath;
 
     private String systemPrompt;
