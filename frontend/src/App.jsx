@@ -19,6 +19,8 @@ import RecommendPage from './pages/Recommend/RecommendPage';
 
 function PrivateRoute({ children }) {
   const accessToken = useAuthStore((s) => s.accessToken);
+  const hasHydrated = useAuthStore((s) => s._hasHydrated);
+  if (!hasHydrated) return null;
   return accessToken ? children : <Navigate to={ROUTES.LOGIN} replace />;
 }
 
