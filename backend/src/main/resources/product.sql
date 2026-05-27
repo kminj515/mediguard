@@ -34,7 +34,7 @@ INSERT INTO product (name, brand, category, thumbnail, price_point, update_at) V
 ('5천원권', '죠스떡볶이', '외식', './image/product/jaws.png', '5000', NOW()),
 ('5천원권', '맥도날드', '외식', './image/product/mcdonalds.png', '5000', NOW()),
 ('5천원권', '샐러디', '외식', './image/product/salady.png', '5000', NOW()),
-('5천원권', '포케올데이', '외식', './image/product/pokeallday.png', '5000', NOW()),
-('5천원권', '엽기떡볶이', '외식', './image/product/yupddeok.png', '5000', NOW()),
+('1만원권', '포케올데이', '외식', './image/product/pokeallday.png', '10000', NOW()),  -- 수정
+('1만 4천원권', '엽기떡볶이', '외식', './image/product/yupddeok.png', '14000', NOW()), -- 수정
 ('5천원권', '롯데리아', '외식', './image/product/lotteria.png', '5000', NOW()),
-('5천원권', '노브랜드', '외식', './image/product/nobrand.png', '5000', NOW());
+('5천원권', '노브랜드', '외식', './image/product/nobrand.png', '5000', NOW());
