@@ -32,10 +32,14 @@
 ---
 
 ## 🖼️ 실행 화면 (Execution Screens)
-<img width="1004" height="1754" alt="image" src="https://github.com/user-attachments/assets/76f338e5-057d-47ee-abe5-06a2e907844a" />
-<img width="982" height="1762" alt="image" src="https://github.com/user-attachments/assets/7097bce9-7063-484f-b7f6-a73273c586f2" />
-<img width="1434" height="1528" alt="image" src="https://github.com/user-attachments/assets/ac16057c-7778-4e0f-b2b4-705d18ff77ec" />
-<img width="964" height="1392" alt="image" src="https://github.com/user-attachments/assets/7693ea80-a393-40ff-bd68-c4b41699f8cc" />
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/76f338e5-057d-47ee-abe5-06a2e907844a" width="45%" />
+  <img src="https://github.com/user-attachments/assets/7097bce9-7063-484f-b7f6-a73273c586f2" width="45%" />
+  <br/><br/>
+  <img src="https://github.com/user-attachments/assets/ac16057c-7778-4e0f-b2b4-705d18ff77ec" width="45%" />
+  <img src="https://github.com/user-attachments/assets/7693ea80-a393-40ff-bd68-c4b41699f8cc" width="45%" />
+</div>
 
 ---
 
