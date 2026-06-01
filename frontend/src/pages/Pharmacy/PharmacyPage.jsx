@@ -216,7 +216,7 @@ export default function PharmacyPage() {
               {selected.twentyFourHours && <span className={styles.tag}>24시간</span>}
             </div>
             {selected.operatingHours && (
-              <p className={styles.sheetHours}>🕐 {selected.operatingHours}</p>
+                <p className={styles.sheetHours}>🕐 {selected.operatingHours.replace(/(\d{2})(\d{2})/g, '$1:$2')}</p>
             )}
             {selected.contact ? (
               <a href={`tel:${selected.contact}`} className={styles.phoneBtn}>
