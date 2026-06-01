@@ -31,7 +31,11 @@
 
 ---
 
-## 🖼️ 작품 소개 및 실행 화면 (Execution Screens)
+## 🖼️ 실행 화면 (Execution Screens)
+<img width="1004" height="1754" alt="image" src="https://github.com/user-attachments/assets/76f338e5-057d-47ee-abe5-06a2e907844a" />
+<img width="982" height="1762" alt="image" src="https://github.com/user-attachments/assets/7097bce9-7063-484f-b7f6-a73273c586f2" />
+<img width="1434" height="1528" alt="image" src="https://github.com/user-attachments/assets/ac16057c-7778-4e0f-b2b4-705d18ff77ec" />
+<img width="964" height="1392" alt="image" src="https://github.com/user-attachments/assets/7693ea80-a393-40ff-bd68-c4b41699f8cc" />
 
 ---
 
@@ -105,6 +109,3 @@ npm start
 ```
 
 ---
-
-## 실행화면
-<img width="2073" height="945" alt="3  W-4조_이미지_작품 소개 사진_page-0001" src="https://github.com/user-attachments/assets/adfa3f06-0154-4628-9adc-d1f32c61ba86" />
