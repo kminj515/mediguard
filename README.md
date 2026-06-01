@@ -38,9 +38,9 @@
   <img src="https://github.com/user-attachments/assets/7097bce9-7063-484f-b7f6-a73273c586f2" width="31%" />
   <img src="https://github.com/user-attachments/assets/ac16057c-7778-4e0f-b2b4-705d18ff77ec" width="31%" />
   <br/><br/>
-  <img src="https://github.com/user-attachments/assets/7693ea80-a393-40ff-bd68-c4b41699f8cc" width="31%" />
   <img src="https://github.com/user-attachments/assets/f1a9cf63-eb41-4600-8b1d-59d79dbb0f12" width="31%" />
   <img src="https://github.com/user-attachments/assets/8dffcb04-c64e-474f-b9e8-db1177061a83" width="31%" />
+  <img src="https://github.com/user-attachments/assets/7693ea80-a393-40ff-bd68-c4b41699f8cc" width="31%" />
 </div>
 
 ---
@@ -95,7 +95,7 @@ cd backend
 # GEMINI_API_KEY, KAKAO_REST_API_KEY 등 입력
 
 # 3. 프로젝트 빌드 및 실행
-./gradlew clean build -x test
+./gradlew clean build
 ./gradlew bootRun
 ```
 
@@ -111,7 +111,7 @@ npm install
 # REACT_APP_KAKAO_MAP_KEY 등 프론트엔드용 API 키 입력
 
 # 4. 로컬 개발 서버 실행 (보통 http://localhost:3000)
-npm start
+npm run dev
 ```
 
 ---
