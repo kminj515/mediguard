@@ -34,11 +34,13 @@
 ## 🖼️ 실행 화면 (Execution Screens)
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/76f338e5-057d-47ee-abe5-06a2e907844a" width="45%" />
-  <img src="https://github.com/user-attachments/assets/7097bce9-7063-484f-b7f6-a73273c586f2" width="45%" />
+  <img src="https://github.com/user-attachments/assets/76f338e5-057d-47ee-abe5-06a2e907844a" width="31%" />
+  <img src="https://github.com/user-attachments/assets/7097bce9-7063-484f-b7f6-a73273c586f2" width="31%" />
+  <img src="https://github.com/user-attachments/assets/ac16057c-7778-4e0f-b2b4-705d18ff77ec" width="31%" />
   <br/><br/>
-  <img src="https://github.com/user-attachments/assets/ac16057c-7778-4e0f-b2b4-705d18ff77ec" width="45%" />
-  <img src="https://github.com/user-attachments/assets/7693ea80-a393-40ff-bd68-c4b41699f8cc" width="45%" />
+  <img src="https://github.com/user-attachments/assets/7693ea80-a393-40ff-bd68-c4b41699f8cc" width="31%" />
+  <img src="https://github.com/user-attachments/assets/f1a9cf63-eb41-4600-8b1d-59d79dbb0f12" width="31%" />
+  <img src="https://github.com/user-attachments/assets/8dffcb04-c64e-474f-b9e8-db1177061a83" width="31%" />
 </div>
 
 ---
