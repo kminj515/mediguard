@@ -34,13 +34,19 @@
 ## 🖼️ 실행 화면 (Execution Screens)
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/76f338e5-057d-47ee-abe5-06a2e907844a" width="31%" />
-  <img src="https://github.com/user-attachments/assets/7097bce9-7063-484f-b7f6-a73273c586f2" width="31%" />
-  <img src="https://github.com/user-attachments/assets/ac16057c-7778-4e0f-b2b4-705d18ff77ec" width="31%" />
+  <img src="https://github.com/user-attachments/assets/3e40ae36-3429-4fb1-abd9-ea82e6d38ed2" width="31%" />
+  <img src="https://github.com/user-attachments/assets/2eed1b28-5a4b-4fe1-8404-dc3f24a0c436" width="31%" />
+  <img src="https://github.com/user-attachments/assets/88b516b4-dbd6-4511-a6ab-30837f625925" width="31%" />
   <br/><br/>
-  <img src="https://github.com/user-attachments/assets/7693ea80-a393-40ff-bd68-c4b41699f8cc" width="31%" />
-  <img src="https://github.com/user-attachments/assets/f1a9cf63-eb41-4600-8b1d-59d79dbb0f12" width="31%" />
-  <img src="https://github.com/user-attachments/assets/8dffcb04-c64e-474f-b9e8-db1177061a83" width="31%" />
+  
+  <img src="https://github.com/user-attachments/assets/9a62a9e4-374d-4a09-835b-0162810b9ef2" width="31%" />
+  <img src="https://github.com/user-attachments/assets/7a45eb95-1e7b-460e-a739-7225104b9ccf" width="31%" />
+  <img src="https://github.com/user-attachments/assets/487807ce-5426-43e7-a0a4-742f82095e8d" width="31%" />
+  <br/><br/>
+
+  <img src="https://github.com/user-attachments/assets/44956a29-d177-400a-bfda-ab44eb5803b2" width="31%" />
+  <img src="https://github.com/user-attachments/assets/617c823a-88b5-46ec-8771-de20f37c5670" width="31%" />
+  <img src="https://github.com/user-attachments/assets/6413535f-9f28-470c-a148-89a02799ba86" width="31%" />
 </div>
 
 ---
@@ -95,7 +101,7 @@ cd backend
 # GEMINI_API_KEY, KAKAO_REST_API_KEY 등 입력
 
 # 3. 프로젝트 빌드 및 실행
-./gradlew clean build -x test
+./gradlew clean build
 ./gradlew bootRun
 ```
 
@@ -111,7 +117,7 @@ npm install
 # REACT_APP_KAKAO_MAP_KEY 등 프론트엔드용 API 키 입력
 
 # 4. 로컬 개발 서버 실행 (보통 http://localhost:3000)
-npm start
+npm run dev
 ```
 
 ---
